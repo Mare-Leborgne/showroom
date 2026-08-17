@@ -252,15 +252,51 @@
   }
   @keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
 
+  /* The address, engraved at the foot of the letterhead. It arrives last, after
+     everything else has settled, and the hairlines draw outward from the text —
+     that restraint is the whole treatment. Uppercase is display only: the DOM
+     text and the href both stay lowercase, and the local part is
+     case-insensitive at the mail host regardless. */
+  .hero .card{
+    display:inline-flex;align-items:center;justify-content:center;gap:16px;
+    margin-top:44px;
+    font-family:'Jost',sans-serif;font-weight:400;
+    font-size:clamp(10px,1.05vw,11.5px);letter-spacing:.26em;
+    text-transform:uppercase;text-decoration:none;color:var(--brass);
+    opacity:0;animation:rise 1.6s var(--ease) 2.5s forwards;
+    transition:color .55s var(--ease),letter-spacing .55s var(--ease);
+  }
+  /* flex-shrink on the rules, so a narrow phone eats the hairlines and never
+     the address */
+  .hero .card::before,.hero .card::after{
+    content:'';width:34px;height:1px;flex:0 1 auto;
+    background:rgba(184,147,90,.55);
+    transform:scaleX(0);animation:cardrule 1.5s var(--ease) 2.75s forwards;
+    transition:background .55s var(--ease);
+  }
+  @keyframes cardrule{to{transform:scaleX(1);}}
+  @media (hover:hover) and (pointer:fine){
+    /* the engraving opens a little under the pointer, pushing its own rules apart */
+    .hero .card:hover{color:var(--brass-lit);letter-spacing:.3em;}
+    .hero .card:hover::before,.hero .card:hover::after{background:rgba(240,220,168,.75);}
+  }
+  /* a 20px line is well under the 44px a thumb needs. The padding grows the tap
+     target only; the hairlines stay centred, so nothing moves visually */
+  @media (max-width:820px),(hover:none){
+    .hero .card{margin-top:30px;padding:14px 0;}
+  }
+
 
   /* The hero holds until the fonts land. Nothing is on screen during the wait —
      the mark starts at opacity 0 and blurred — so the pause costs nothing
      visually while removing the swap entirely. The head script caps it at 1.2s,
      so a hung font request can never stall the opening. */
   html.js .hero .eyebrow,html.js .hero h1,html.js .hero .rule,
-  html.js .hero .tag{animation-play-state:paused;}
+  html.js .hero .tag,html.js .hero .card,
+  html.js .hero .card::before,html.js .hero .card::after{animation-play-state:paused;}
   html.js.fonts .hero .eyebrow,html.js.fonts .hero h1,html.js.fonts .hero .rule,
-  html.js.fonts .hero .tag{animation-play-state:running;}
+  html.js.fonts .hero .tag,html.js.fonts .hero .card,
+  html.js.fonts .hero .card::before,html.js.fonts .hero .card::after{animation-play-state:running;}
 
   /* ─────────── reveals ─────────── */
   /* The hidden state is gated on html.js. Everything below the hero is a `.r`,
@@ -406,7 +442,8 @@
        end of the ramp at 3.2:1. Pin it to the bright middle instead. */
     .hero h1{filter:none;opacity:1;background-position:50% 0;}
     .hero .rule{width:70px;}
-    .hero .eyebrow,.hero .tag{opacity:1;}
+    .hero .eyebrow,.hero .tag,.hero .card{opacity:1;}
+    .hero .card::before,.hero .card::after{transform:scaleX(1);}
     /* must out-specify html.js .r, which is (0,2,1) */
     .r,.w,html.js .r,html.js .r.in{opacity:1!important;transform:none!important;filter:none!important;}
     .cur{display:none!important;}
@@ -448,6 +485,13 @@
   "description": "Boutique web design for unique Sydney businesses. Sites made to measure, never from a template.",
   "slogan": "Sites, sur mesure.",
   "inLanguage": "en-AU",
+  "email": "hello@mareleborgne.com",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "sales",
+    "email": "hello@mareleborgne.com",
+    "areaServed": "AU"
+  },
   "founder": { "@type": "Person", "name": "Augusto Leborgne" },
   "address": {
     "@type": "PostalAddress",
@@ -487,6 +531,10 @@
     <h1>Mare Leborgne</h1>
     <div class="rule"></div>
     <div class="tag">Sites, sur mesure.</div>
+    <!-- the address set as the base of a letterhead: two hairlines broken by the
+         text, reusing the rule motif from above the tagline rather than putting
+         a button on the sea. href stays lowercase; only the display is engraved -->
+    <a class="card" href="mailto:hello@mareleborgne.com">hello@mareleborgne.com</a>
   </div>
 </div>
 
@@ -845,11 +893,10 @@
      shows an OS handler dialog that blurs the window even with no mail app
      installed, so recovery is never made to depend on guessing right;
      detection only softens the wording.                                    */
-  /* assembled at runtime so the address is not sitting in the source as a
-     plain string for the harvesters that scrape pages for exactly that. It
-     never renders unless the service failed, but it stays in the file on
-     purpose: a lost enquiry costs more than an obfuscated address. */
-  var MAILTO_TO = ['leborgneaugusto', 'gmail.com'].join('@');
+  /* the studio address, plainly. It is already set in the hero and in the
+     structured data, so hiding it from harvesters here would buy nothing —
+     and a public forwarding address is the right thing to expose anyway. */
+  var MAILTO_TO = 'hello@mareleborgne.com';
   var form = document.getElementById('enq');
   var sent = document.getElementById('sent');
   var trap = document.getElementById('f6');
