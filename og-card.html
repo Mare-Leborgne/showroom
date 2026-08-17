@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<title>Mare Leborgne — share card source</title>
+<!--
+  Source for og.png (1200×630), the image that renders when the site's link is
+  pasted into a message, a post, or a search result. Committed rather than
+  discarded so the card can be regenerated whenever the tagline changes.
+
+  To rebuild:
+
+  "C:\Program Files\Google\Chrome\Application\chrome.exe" \
+    --headless --disable-gpu --hide-scrollbars \
+    --virtual-time-budget=4000 \
+    --window-size=1200,630 --force-device-scale-factor=1 \
+    --screenshot=og.png og-card.html
+
+  --virtual-time-budget is not optional: without it Chrome captures before the
+  webfonts arrive and bakes the fallback face permanently into the card.
+
+  Deliberately no film grain. Noise wrecks PNG compression — the flat gradient
+  lands near 60KB, the same card with grain lands past 400KB.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&family=Jost:wght@400&family=Beau+Rivage&display=block" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{width:1200px;height:630px;overflow:hidden;}
+  body{
+    background:radial-gradient(125% 95% at 50% 12%, #1c2b46 0%, #14213D 44%, #0B1424 100%);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  /* the hero's sea, drawn as static paths rather than a canvas */
+  .sea{position:absolute;inset:0;z-index:1;}
+  /* everything sits inside a 1000×500 safe box so no platform crop clips it */
+  .stack{
+    position:relative;z-index:2;width:1000px;height:500px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;
+  }
+  .eyebrow{
+    font-family:'Jost',sans-serif;font-size:13px;letter-spacing:.4em;
+    text-transform:uppercase;color:#B8935A;margin-bottom:22px;
+  }
+  h1{
+    font-family:'Beau Rivage',cursive;font-weight:400;font-size:150px;line-height:1.3;
+    padding:0 .1em .14em;margin-bottom:6px;
+    background:linear-gradient(100deg,#8a6a3a 0%,#B8935A 32%,#F0DCA8 50%,#B8935A 68%,#8a6a3a 100%);
+    background-size:260% 100%;background-position:50% 0;   /* the sheen at its brightest */
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;
+  }
+  .rule{width:70px;height:1px;background:rgba(184,147,90,.75);margin:22px 0;}
+  .tag{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+    font-size:30px;letter-spacing:.02em;color:#E4DAC2;
+  }
+  .url{
+    position:absolute;bottom:0;left:0;right:0;text-align:center;
+    font-family:'Jost',sans-serif;font-size:12px;letter-spacing:.24em;
+    text-transform:uppercase;color:rgba(243,236,221,.45);
+  }
+</style>
+</head>
+<body>
+
+<svg class="sea" viewBox="0 0 1200 630" preserveAspectRatio="none" aria-hidden="true">
+  <g fill="none" stroke="#B8935A" stroke-width="1">
+    <path d="M0 392 C 200 372, 400 412, 600 392 S 1000 372, 1200 392" stroke-opacity=".08"/>
+    <path d="M0 432 C 220 404, 420 460, 640 432 S 1020 404, 1200 432" stroke-opacity=".11"/>
+    <path d="M0 480 C 180 444, 440 516, 660 480 S 1040 444, 1200 480" stroke-opacity=".14"/>
+    <path d="M0 536 C 240 492, 460 580, 700 536 S 1000 492, 1200 536" stroke-opacity=".17"/>
+    <path d="M0 600 C 200 548, 480 652, 720 600 S 1020 548, 1200 600" stroke-opacity=".20"/>
+  </g>
+</svg>
+
+<div class="stack">
+  <div class="eyebrow">Sydney</div>
+  <h1>Mare Leborgne</h1>
+  <div class="rule"></div>
+  <div class="tag">Sites, sur mesure.</div>
+  <div class="url">mareleborgne.com</div>
+</div>
+
+</body>
+</html>
