@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mare Leborgne · Boutique web design, Sydney</title>
+<title>Mare Leborgne · Boutique web design</title>
 <meta name="description" content="Boutique web design for unique Sydney businesses. Sites made to measure, never from a template.">
 <link rel="canonical" href="https://mareleborgne.com/">
 <meta name="robots" content="index,follow,max-image-preview:large">
@@ -556,7 +556,18 @@
     <h2 class="display r split" style="margin-top:26px;max-width:720px;">Tell us about what you have built.</h2>
     <p class="body r" style="margin-top:26px;">This is the start of a conversation rather than a quote request. Answer as briefly or as fully as you like.</p>
 
-    <form id="enq" class="r" method="post">
+    <form id="enq" class="r" method="post" action="https://api.web3forms.com/submit">
+      <!-- Delivery. Web3Forms takes the submission and emails it to the studio,
+           so nothing depends on the visitor having a mail app. The access key is
+           public by design: it can only ever deliver to the one address it was
+           registered against, and it cannot be used to read anything back.
+           Because the action lives here rather than in the script, the form also
+           sends with JavaScript switched off. -->
+      <input type="hidden" name="access_key" value="PASTE-YOUR-WEB3FORMS-ACCESS-KEY-HERE">
+      <input type="hidden" name="from_name" value="Mare Leborgne">
+      <input type="hidden" name="subject" value="Enquiry from mareleborgne.com">
+      <input type="hidden" name="redirect" value="https://mareleborgne.com/thank-you.html">
+
       <div class="field">
         <label for="f1">What is the business, and what do you do?</label>
         <textarea id="f1" name="business" rows="2" required></textarea><i class="bar"></i>
@@ -580,8 +591,9 @@
         <input type="email" id="f5" name="email" required autocomplete="email" inputmode="email" spellcheck="false"><i class="bar"></i>
       </div>
 
-      <!-- spam trap: off-screen, never filled in by a person -->
-      <div class="trap" aria-hidden="false"><label for="f6">Leave this field empty</label><input type="text" id="f6" name="_gotcha" tabindex="-1" autocomplete="off"></div>
+      <!-- spam trap: off-screen, never ticked by a person. Named botcheck so the
+           form service filters it server-side as well, not only the script here -->
+      <div class="trap"><label for="f6">Leave this box unticked</label><input type="checkbox" id="f6" name="botcheck" tabindex="-1"></div>
 
       <div class="btnwrap" id="btnwrap">
         <button type="submit" class="send" id="send"><span>Send enquiry</span></button>
@@ -590,7 +602,7 @@
       <div class="sent" id="sent" role="status" aria-live="polite" tabindex="-1"></div>
 
       <noscript>
-        <p class="sent show">This form needs JavaScript switched on to send. Once a form service is configured (see the note at the top of the script), it will work without it.</p>
+        <p class="sent show">Fill this in and press send as normal. You will land on a short confirmation page rather than staying here.</p>
       </noscript>
     </form>
   </div>
@@ -606,33 +618,24 @@
 
 <script>
 /* ══════════════════════════════════════════════════════════════
-   ENQUIRIES — the only part of this file you would ever need to edit.
+   ENQUIRIES
 
-   AS IT STANDS (both blank): pressing "Send enquiry" opens the visitor's
-   own email app with everything already typed in, and they press send
-   there. The page also always shows the address and a "copy my enquiry"
-   button, because on a phone with no email app set up, nothing opens at
-   all. That failure is invisible to you, which is why the fallback is
-   shown every time rather than only when something looks wrong.
+   Everything the form needs is in its own markup further up: where to
+   send, the access key, the subject line, and the page to land on
+   afterwards. There is nothing to configure down here.
 
-   THE CATCH: the visitor has to complete a second step in their own mail
-   app. A fair number never do, and you never learn they tried.
+   Because it is all in the markup, the form sends even with JavaScript
+   switched off — the browser posts it and the service returns the visitor
+   to thank-you.html. The code below only makes it nicer, sending in the
+   background so the page never reloads.
 
-   TO FIX THAT: a form service takes the submission and emails it to you
-   directly, so nothing depends on the visitor's device. They are free at
-   this volume and take about five minutes:
+   If the service is ever down, blocked, or the visitor is offline, the
+   enquiry falls back to their own mail app rather than evaporating. That
+   is the only path on which the studio's address is ever shown.
 
-     1. Go to web3forms.com, enter your own address, and they email you a
-        long "access key". There is no account or password.
-     2. Paste that key between the quotes on ENQUIRY_KEY below.
-     3. Put 'https://api.web3forms.com/submit' on ENQUIRY_ENDPOINT.
-
-   Nothing else changes. Enquiries then arrive in your inbox on send, and
-   if the service is ever down the form quietly falls back to the email
-   app rather than losing the message.
+   To change service later: swap the form's action and access_key. This
+   file needs no other edit.
    ══════════════════════════════════════════════════════════════ */
-const ENQUIRY_ENDPOINT = '';
-const ENQUIRY_KEY      = '';
 
 (function () {
   'use strict';
@@ -835,21 +838,29 @@ const ENQUIRY_KEY      = '';
   }
 
   /* ── enquiry ──────────────────────────────────────────────
-     Default: composes the email in the visitor's own client, and *always*
-     offers the address as a fallback as well. Whether a mailto actually
-     opened cannot be detected reliably — Windows shows an OS handler dialog
-     that blurs the window even with no mail app installed — so recovery is
-     never made to depend on guessing right. Detection only softens the
-     wording; the address and the copy button are shown in every branch.
-     Paste an endpoint into ENQUIRY_ENDPOINT and the same form posts silently
-     to a real inbox instead, with mailto still catching any failure.       */
+     Posts to the service in the background. Only if that fails does it fall
+     back to composing the email in the visitor's own client — and on that
+     path the address and a copy button are shown *unconditionally*, because
+     whether a mailto actually opened cannot be detected reliably. Windows
+     shows an OS handler dialog that blurs the window even with no mail app
+     installed, so recovery is never made to depend on guessing right;
+     detection only softens the wording.                                    */
   /* assembled at runtime so the address is not sitting in the source as a
-     plain string for the harvesters that scrape pages for exactly that. It is
-     still recoverable by anyone who looks properly; a form service is what
-     removes it from the page altogether. */
+     plain string for the harvesters that scrape pages for exactly that. It
+     never renders unless the service failed, but it stays in the file on
+     purpose: a lost enquiry costs more than an obfuscated address. */
   var MAILTO_TO = ['leborgneaugusto', 'gmail.com'].join('@');
   var form = document.getElementById('enq');
   var sent = document.getElementById('sent');
+  var trap = document.getElementById('f6');
+
+  /* a real access key is a UUID. While the placeholder is still sitting there
+     the form must not post anywhere, so the action comes off and the mail app
+     handles it — the same behaviour the site had before the service existed. */
+  var keyField = form.elements.access_key;
+  var configured = !!(keyField &&
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(keyField.value));
+  if (!configured) form.removeAttribute('action');
 
   function val(id) { return (document.getElementById(id).value || '').trim(); }
 
@@ -936,30 +947,33 @@ const ENQUIRY_KEY      = '';
 
   form.addEventListener('submit', function (ev) {
     ev.preventDefault();
-    if (val('f6')) return;                    /* honeypot: a bot filled it in */
+    if (trap && trap.checked) return;         /* honeypot: a bot ticked it */
     var d = compose();
     send.disabled = true;
 
-    if (ENQUIRY_ENDPOINT) {
-      var payload = new FormData(form);
-      if (ENQUIRY_KEY) payload.append('access_key', ENQUIRY_KEY);
-      payload.append('subject', 'Enquiry from ' + (d.name || 'the site'));
-      fetch(ENQUIRY_ENDPOINT, {
-        method: 'POST', body: payload, headers: { Accept: 'application/json' }
+    if (!configured) { mailtoPath(d); return; }
+
+    var payload = new FormData(form);
+    /* set, not append: subject is already in the markup for the no-script path */
+    payload.set('subject', 'Enquiry from ' + (d.name || 'the site'));
+    payload.delete('redirect');               /* fetch never navigates anywhere */
+
+    fetch(form.action, {
+      method: 'POST', body: payload, headers: { Accept: 'application/json' }
+    })
+      /* the service answers 200 with {success:false} for a key it will not
+         accept, so the body decides, not the status */
+      .then(function (r) { return r.json().catch(function () { return {}; }); })
+      .then(function (j) {
+        if (!j.success) throw new Error(j.message || 'refused');
+        showSuccess(d.name);
+        form.reset();
+        Array.prototype.forEach.call(document.querySelectorAll('.field.on'),
+          function (f) { f.classList.remove('on'); });
       })
-        .then(function (r) { if (!r.ok) throw new Error('bad status'); })
-        .then(function () {
-          showSuccess(d.name);
-          form.reset();
-          Array.prototype.forEach.call(document.querySelectorAll('.field.on'),
-            function (f) { f.classList.remove('on'); });
-        })
-        /* endpoint down, blocked, or offline → fall through to mailto
-           rather than let the enquiry evaporate */
-        .catch(function () { mailtoPath(d); });
-      return;
-    }
-    mailtoPath(d);
+      /* down, blocked, offline, or a key that has stopped working → the mail
+         app, rather than letting the enquiry evaporate */
+      .catch(function () { mailtoPath(d); });
   });
 
   /* ── cursor ───────────────────────────────────────────────
