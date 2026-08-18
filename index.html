@@ -252,38 +252,26 @@
   }
   @keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
 
-  /* The address, engraved at the foot of the letterhead. It arrives last, after
-     everything else has settled, and the hairlines draw outward from the text —
-     that restraint is the whole treatment. Uppercase is display only: the DOM
-     text and the href both stay lowercase, and the local part is
-     case-insensitive at the mail host regardless. */
+  /* The address as a quiet last line, set in the tagline's own face but roman
+     against its italic — the classical pairing, and a plainer voice for what is
+     simply a fact. Lowercase: an email is not a heading, and small caps at this
+     size read as a button rather than a calling card. It arrives last, once
+     everything above it has settled. */
   .hero .card{
-    display:inline-flex;align-items:center;justify-content:center;gap:16px;
-    margin-top:44px;
-    font-family:'Jost',sans-serif;font-weight:400;
-    font-size:clamp(10px,1.05vw,11.5px);letter-spacing:.26em;
-    text-transform:uppercase;text-decoration:none;color:var(--brass);
+    display:inline-block;margin-top:38px;
+    font-family:'Cormorant Garamond',serif;font-weight:300;
+    font-size:clamp(15.5px,1.8vw,19px);letter-spacing:.045em;
+    text-decoration:none;color:var(--brass);
     opacity:0;animation:rise 1.6s var(--ease) 2.5s forwards;
-    transition:color .55s var(--ease),letter-spacing .55s var(--ease);
+    transition:color .55s var(--ease);
   }
-  /* flex-shrink on the rules, so a narrow phone eats the hairlines and never
-     the address */
-  .hero .card::before,.hero .card::after{
-    content:'';width:34px;height:1px;flex:0 1 auto;
-    background:rgba(184,147,90,.55);
-    transform:scaleX(0);animation:cardrule 1.5s var(--ease) 2.75s forwards;
-    transition:background .55s var(--ease);
-  }
-  @keyframes cardrule{to{transform:scaleX(1);}}
   @media (hover:hover) and (pointer:fine){
-    /* the engraving opens a little under the pointer, pushing its own rules apart */
-    .hero .card:hover{color:var(--brass-lit);letter-spacing:.3em;}
-    .hero .card:hover::before,.hero .card:hover::after{background:rgba(240,220,168,.75);}
+    .hero .card:hover{color:var(--brass-lit);}
   }
-  /* a 20px line is well under the 44px a thumb needs. The padding grows the tap
-     target only; the hairlines stay centred, so nothing moves visually */
+  /* the line box is ~25px, under the 44px a thumb needs. Padding grows only the
+     tap target, so nothing moves visually */
   @media (max-width:820px),(hover:none){
-    .hero .card{margin-top:30px;padding:14px 0;}
+    .hero .card{margin-top:30px;padding:10px 0;}
   }
 
 
@@ -292,11 +280,9 @@
      visually while removing the swap entirely. The head script caps it at 1.2s,
      so a hung font request can never stall the opening. */
   html.js .hero .eyebrow,html.js .hero h1,html.js .hero .rule,
-  html.js .hero .tag,html.js .hero .card,
-  html.js .hero .card::before,html.js .hero .card::after{animation-play-state:paused;}
+  html.js .hero .tag,html.js .hero .card{animation-play-state:paused;}
   html.js.fonts .hero .eyebrow,html.js.fonts .hero h1,html.js.fonts .hero .rule,
-  html.js.fonts .hero .tag,html.js.fonts .hero .card,
-  html.js.fonts .hero .card::before,html.js.fonts .hero .card::after{animation-play-state:running;}
+  html.js.fonts .hero .tag,html.js.fonts .hero .card{animation-play-state:running;}
 
   /* ─────────── reveals ─────────── */
   /* The hidden state is gated on html.js. Everything below the hero is a `.r`,
@@ -443,7 +429,6 @@
     .hero h1{filter:none;opacity:1;background-position:50% 0;}
     .hero .rule{width:70px;}
     .hero .eyebrow,.hero .tag,.hero .card{opacity:1;}
-    .hero .card::before,.hero .card::after{transform:scaleX(1);}
     /* must out-specify html.js .r, which is (0,2,1) */
     .r,.w,html.js .r,html.js .r.in{opacity:1!important;transform:none!important;filter:none!important;}
     .cur{display:none!important;}
@@ -531,9 +516,8 @@
     <h1>Mare Leborgne</h1>
     <div class="rule"></div>
     <div class="tag">Sites, sur mesure.</div>
-    <!-- the address set as the base of a letterhead: two hairlines broken by the
-         text, reusing the rule motif from above the tagline rather than putting
-         a button on the sea. href stays lowercase; only the display is engraved -->
+    <!-- the address as the closing line of the letterhead, in the tagline's own
+         serif rather than a button on the sea -->
     <a class="card" href="mailto:hello@mareleborgne.com">hello@mareleborgne.com</a>
   </div>
 </div>
