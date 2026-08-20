@@ -21,6 +21,14 @@ Tagline: "Sites, sur mesure." — websites, made to measure.
 - Cut by hand: everything written and built for one business only.
 - Finished to last: quick on every device, and simple enough to maintain.
 
+## Mission
+
+A website should look like the business it belongs to. Most small businesses
+end up on one of the same few templates, and the first thing lost is whatever
+made them worth visiting. Every site Mare Leborgne builds begins with the
+business itself, and is built so that it could not be handed to anyone else.
+Signed by Augusto Leborgne, founder.
+
 ## How a project begins
 
 - A conversation first, in person where possible. Nothing is committed at
