@@ -5,9 +5,19 @@ regenerate all of it. Nothing in here is used by the website itself except the
 favicons and the email signature's wordmark; the site draws its own marks from
 the stylesheet.
 
-The whole set is served from the site, so any of these can be linked to
-directly — `https://mareleborgne.com/brand/logo/wordmark-brass.svg` and so on.
-That matters for the email signature, whose image has to live at a public URL.
+**None of this is published.** `_config.yml` at the repository root excludes the
+brand kit from the site GitHub Pages builds, so every path under `/brand/`
+returns 404 at mareleborgne.com. Use the files from this folder — clone, or
+download the repository — rather than by linking to them.
+
+The single exception is `email/wordmark-signature.png`. That one has to stay
+public: it is fetched from mareleborgne.com by the mail client of every person
+who has ever received an email from the studio, and unpublishing it would break
+the wordmark in all of them at once, retroactively.
+
+One thing this does not do: the repository itself is public, so anyone who
+finds it on GitHub can read every file here. Keeping the kit off the domain and
+making the repository private are two separate decisions.
 
 ---
 
@@ -79,9 +89,14 @@ _src/     the font, the licence, and the generator
 
 ## The email signature
 
-Open **`email/install.html`** — in a browser, or at
-`https://mareleborgne.com/brand/email/install.html` — and follow it. There is a
-copy button and four steps.
+Open **`email/install.html`** from this folder in a browser — double-click it
+— and follow it. There is a copy button and four steps.
+
+It is not on the website. Nothing in this folder is: `_config.yml` at the
+repository root keeps the whole brand kit out of what GitHub Pages publishes,
+so these files 404 at mareleborgne.com. The installer still works offline
+because the wordmark it previews is loaded from the live URL, which is the one
+file here that stays public.
 
 Three things about it are deliberate, and all three are Gmail's doing:
 
@@ -102,7 +117,9 @@ the lighter brass, if a dark ground is ever the target instead.
 
 **The image must stay at `mareleborgne.com`.** Every signature already sent
 points at that URL; moving or deleting it breaks the mark in all of them,
-retroactively.
+retroactively. It is named individually in `_config.yml` for that reason — and
+excluding `brand/` wholesale, which looked like the tidier way to write that
+config, is exactly what took it offline once already.
 
 ---
 
