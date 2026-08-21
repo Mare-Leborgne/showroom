@@ -3,32 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="robots" content="noindex">
-<title>Mare Leborgne — touch icon source</title>
+<title>Mare Leborgne — icon source</title>
 <!--
-  Source for apple-touch-icon.png (180×180), used by iOS when the site is added
-  to a home screen and by older Safari, neither of which reads the inline SVG
-  favicon in index.html. Same two contour lines, same navy.
+  Source for every raster icon on the site. Same two contour lines as the
+  favicon and the hero's sea, same navy. Not linked from anywhere; it exists to
+  be screenshotted.
 
-  To rebuild:
+  Size comes from ?s= and the maskable inset from ?m=1, so one file draws all
+  four icons rather than four files drifting apart.
 
-  "C:\Program Files\Google\Chrome\Application\chrome.exe" \
-    --headless --disable-gpu --hide-scrollbars \
-    --window-size=180,180 --force-device-scale-factor=1 \
-    --screenshot=apple-touch-icon.png icon-card.html
+    apple-touch-icon.png   180   iOS home screen, and older Safari, neither of
+                                 which reads the inline SVG favicon.
+    icon-192.png           192   the smallest Android will accept. Without it
+                                 the manifest declares a standalone app that
+                                 Chrome then refuses to offer to install.
+    icon-512.png           512   splash screen, app switcher, store listings.
+    icon-maskable-512.png  512   Android crops every icon to whatever shape the
+                                 launcher uses — circle, squircle, teardrop —
+                                 and only guarantees the middle 80%. ?m=1 pulls
+                                 the waves inside that safe zone so they survive
+                                 the crop. The plain 512 stays uncropped for
+                                 every platform that does not do this.
+
+  To rebuild all four (one line, from this directory):
+
+    node rebuild-icons.js
+
+  or by hand, per icon:
+
+    "C:\Program Files\Google\Chrome\Application\chrome.exe" \
+      --headless --disable-gpu --hide-scrollbars \
+      --window-size=512,512 --force-device-scale-factor=1 \
+      --screenshot=icon-512.png "icon-card.html?s=512"
 -->
 <style>
   *{margin:0;padding:0;}
-  html,body{width:180px;height:180px;overflow:hidden;background:#0B1424;}
-  svg{display:block;width:180px;height:180px;}
+  html,body{overflow:hidden;background:#0B1424;}
+  svg{display:block;}
 </style>
 </head>
 <body>
-<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <rect width="32" height="32" fill="#0B1424"/>
-  <g fill="none" stroke="#B8935A" stroke-linecap="round">
+  <g id="mark" fill="none" stroke="#B8935A" stroke-linecap="round">
     <path d="M4 12.5c4-4.5 8-4.5 12 0s8 4.5 12 0" stroke-width="2.6"/>
     <path d="M4 21c4-4.5 8-4.5 12 0s8 4.5 12 0" stroke-width="1.8" stroke-opacity=".55"/>
   </g>
 </svg>
+<script>
+  var q = new URLSearchParams(location.search);
+  var s = parseInt(q.get('s'), 10) || 180;
+  var svg = document.querySelector('svg');
+  document.documentElement.style.width = document.body.style.width = s + 'px';
+  document.documentElement.style.height = document.body.style.height = s + 'px';
+  svg.style.width = svg.style.height = s + 'px';
+  /* the maskable safe zone is the middle 80%. Scaling the mark to 0.66 about
+     the centre keeps it inside that circle with room to spare, which is what
+     stops a launcher shaving the ends off the waves. */
+  if (q.get('m') === '1') {
+    document.getElementById('mark').setAttribute('transform', 'translate(16,16) scale(0.66) translate(-16,-16)');
+  }
+</script>
 </body>
 </html>

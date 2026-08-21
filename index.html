@@ -3,6 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<!-- ─── content security policy ───
+     GitHub Pages sends HSTS but no CSP and no nosniff, and a static host gives
+     no way to add response headers, so the policy is declared here instead. A
+     meta policy is enforced exactly like a header with one exception:
+     frame-ancestors is ignored in meta, so this cannot stop the page being
+     framed. Nothing here is worth clickjacking — there is no session and no
+     button that does anything on the visitor's behalf — so that is an
+     acceptable gap rather than a silent one.
+
+     What it buys: every resource on this page is now same-origin or a data:
+     URI, so default-src 'self' means an injected <script src>, <img src>, tag
+     manager, pixel or webfont from anywhere else simply does not load. The two
+     exceptions are named explicitly and are both the enquiry form's own
+     endpoint: connect-src for the background fetch, form-action for the plain
+     HTML post when JavaScript is off.
+
+     'unsafe-inline' is required because the stylesheet, the two scripts and the
+     inline style attributes all live in this file, which is the whole point of
+     a single-file site. It could be replaced with sha256- hashes for a stricter
+     policy, but every edit to a script or style block would then need the hash
+     regenerated, and a stale hash breaks the page silently. For a hand-edited
+     page with no user-supplied content anywhere, that trade is not worth it. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; upgrade-insecure-requests">
+<!-- the modern default, stated rather than assumed: an outbound click carries
+     the origin and never the path someone was reading -->
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
 <title>Mare Leborgne · Boutique web design, Sydney</title>
 <meta name="description" content="Boutique web design - Sydney. Custom-made tailored sites.">
 <link rel="canonical" href="https://mareleborgne.com/">
@@ -30,7 +58,7 @@
 
 <!-- the mark, drawn as two contour lines from the hero's own sea. an SVG favicon
      cannot load a webfont, so the wordmark could never be used here -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B1424'/%3E%3Cg fill='none' stroke='%23B8935A' stroke-linecap='round'%3E%3Cpath d='M4 12.5c4-4.5 8-4.5 12 0s8 4.5 12 0' stroke-width='2.6'/%3E%3Cpath d='M4 21c4-4.5 8-4.5 12 0s8 4.5 12 0' stroke-width='1.8' stroke-opacity='.55'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20fill='%230B1424'/%3E%3Cg%20fill='none'%20stroke='%23B8935A'%20stroke-linecap='round'%3E%3Cpath%20d='M4%2012.5c4-4.5%208-4.5%2012%200s8%204.5%2012%200'%20stroke-width='2.6'/%3E%3Cpath%20d='M4%2021c4-4.5%208-4.5%2012%200s8%204.5%2012%200'%20stroke-width='1.8'%20stroke-opacity='.55'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/manifest.webmanifest">
 <!-- Added to the Home Screen the page owns the whole display: 844px rather than
@@ -44,11 +72,21 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mare Leborgne">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Pinyon Script is inlined in the stylesheet below; only the faces actually used
-     by a rule are requested here (6, not the 13 that were being downloaded) -->
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=EB+Garamond:wght@400&family=Jost:wght@400&display=swap" rel="stylesheet">
+<!-- The typefaces are served from this origin. They used to come from Google,
+     which cost two DNS lookups and two TLS handshakes before a stylesheet could
+     even be fetched, and only then could the font files themselves be asked for
+     - three round trips deep on the critical path, on a page whose whole opening
+     waits for the fonts. They are Google's own woff2 subsets, unchanged, under
+     the same OFL licence; see fonts/README.txt. Nothing about the page now
+     touches a third party, which is also why no visitor's browser announces
+     itself to one. The @font-face rules are inlined in the stylesheet below.
+
+     Preloaded: the three faces the first screen actually paints with. The rest
+     are discovered from the stylesheet in the ordinary way, and the latin-ext
+     files are only fetched if a character needs them. -->
+<link rel="preload" as="font" type="font/woff2" href="/fonts/cormorant-garamond-roman-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/cormorant-garamond-italic-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/jost-roman-latin.woff2" crossorigin>
 <style>
   /* Pinyon Script, subset to the letters in "Mare Leborgne" and the "Augusto
      Leborgne" signature (6,048 bytes against the full Latin face). Inlined so
@@ -64,6 +102,37 @@
     src:url(data:font/woff2;base64,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) format('woff2');
     unicode-range:U+20,U+41,U+4c-4d,U+61-62,U+65,U+67,U+6e-6f,U+72-75;
   }
+
+  /* Cormorant Garamond, EB Garamond and Jost, self-hosted from /fonts. These are
+     Google's own subsets and these are Google's own rules, with only the src
+     rewritten to this origin. The unicode-range values are what keep the
+     latin-ext files from being downloaded unless a character needs them, so they
+     must stay exactly as they are. Cormorant Garamond is a variable font: one
+     file serves 300 and 400, which is why two rules point at the same URL. */
+  @font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:300;font-display:swap;src:url(/fonts/cormorant-garamond-italic-latin-ext.woff2) format('woff2');
+    unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}   /* latin-ext */
+  @font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:300;font-display:swap;src:url(/fonts/cormorant-garamond-italic-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}   /* latin */
+  @font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:400;font-display:swap;src:url(/fonts/cormorant-garamond-italic-latin-ext.woff2) format('woff2');
+    unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}   /* latin-ext */
+  @font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:400;font-display:swap;src:url(/fonts/cormorant-garamond-italic-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}   /* latin */
+  @font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:300;font-display:swap;src:url(/fonts/cormorant-garamond-roman-latin-ext.woff2) format('woff2');
+    unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}   /* latin-ext */
+  @font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:300;font-display:swap;src:url(/fonts/cormorant-garamond-roman-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}   /* latin */
+  @font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/cormorant-garamond-roman-latin-ext.woff2) format('woff2');
+    unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}   /* latin-ext */
+  @font-face{font-family:'Cormorant Garamond';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/cormorant-garamond-roman-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}   /* latin */
+  @font-face{font-family:'EB Garamond';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/eb-garamond-roman-latin-ext.woff2) format('woff2');
+    unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}   /* latin-ext */
+  @font-face{font-family:'EB Garamond';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/eb-garamond-roman-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}   /* latin */
+  @font-face{font-family:'Jost';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/jost-roman-latin-ext.woff2) format('woff2');
+    unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}   /* latin-ext */
+  @font-face{font-family:'Jost';font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/jost-roman-latin.woff2) format('woff2');
+    unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}   /* latin */
 
 
   :root{
@@ -90,9 +159,18 @@
     --sal:env(safe-area-inset-left,0px);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
+  /* the attribute, not a class: author rules out-specify the UA stylesheet's
+     [hidden], and the work section below is switched on and off with it */
+  [hidden]{display:none!important;}
   /* the canvas colour again, one level up. Some engines take the page tint
      from the root element rather than from body, so both are set */
-  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;background:var(--navy-deep);}
+  html{
+    scroll-behavior:smooth;-webkit-font-smoothing:antialiased;background:var(--navy-deep);
+    /* iOS enlarges text when a phone is turned sideways, which is precisely
+       where the hero's height breakpoints are doing their most careful work.
+       Every size on the page is already deliberate, so opt out of the guess. */
+    -webkit-text-size-adjust:100%;text-size-adjust:100%;
+  }
   body{
     /* Navy, not ivory, even though most of the page is ivory. iOS Safari tints
        the status-bar band and the bottom toolbar band by sampling the page
@@ -276,7 +354,12 @@
     /* generous line-height + padding: the background-clip gradient only paints
        inside the element box, so a tight box would cut the script descenders */
     font-size:clamp(58px,11.5vw,138px);line-height:1.32;margin-bottom:8px;padding:0 .1em .14em;
-    background:linear-gradient(100deg,#8a6a3a 0%,var(--brass) 32%,var(--brass-lit) 50%,var(--brass) 68%,#8a6a3a 100%);
+    /* The ramp's dark end was #8a6a3a, which measured 2.83:1 against the
+       lightest point of the hero's radial - under the 3:1 WCAG asks of text
+       this size, and the sheen sweeps that end right through the wordmark
+       twice a cycle. #987644 is the same brass a third of the way toward the
+       mid tone: 3.38:1, and the sheen still reads as a sheen. */
+    background:linear-gradient(100deg,#987644 0%,var(--brass) 32%,var(--brass-lit) 50%,var(--brass) 68%,#987644 100%);
     background-size:260% 100%;
     -webkit-background-clip:text;background-clip:text;
     -webkit-text-fill-color:transparent;color:transparent;
@@ -390,6 +473,59 @@
     max-width:664px;margin-bottom:28px;
   }
 
+  /* ─────────── work ───────────
+     Written in full, switched off at the section. Building the styles now and
+     the markup later is how a portfolio section ends up looking bolted on; this
+     way the first project is a paste and a deleted attribute. Nothing here
+     renders, and nothing here costs a request, while the section is hidden. */
+  .work{background:var(--ivory);}
+  .work .label{display:block;margin-bottom:26px;}
+  .work .projects{
+    list-style:none;margin-top:clamp(44px,6vw,64px);
+    display:grid;gap:clamp(46px,6vw,72px);grid-template-columns:1fr;
+  }
+  /* auto-fit rather than a fixed two columns: one project fills the width
+     instead of sitting half-size beside a gap, two sit side by side, three
+     wrap. The section has to read right at every count, which is the whole
+     reason for settling it before there is anything in it. */
+  @media (min-width:900px){
+    .work .projects{grid-template-columns:repeat(auto-fit,minmax(420px,1fr));}
+  }
+  .work .piece{display:block;text-decoration:none;color:inherit;}
+  /* the frame holds its shape from the first layout: aspect-ratio plus the
+     img's own width/height means the page never reflows when a screenshot
+     arrives, and the tint is what sits there while it is still loading */
+  .work .shot{
+    display:block;aspect-ratio:16/10;overflow:hidden;position:relative;
+    background:linear-gradient(160deg,#e7ddc8,#d8ccb2);
+    border:1px solid rgba(20,33,61,.10);
+  }
+  .work .shot img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform 1.2s var(--ease);
+  }
+  @media (hover:hover) and (pointer:fine){
+    .work .piece:hover .shot img{transform:scale(1.03);}
+  }
+  .work h3{
+    font-family:'Cormorant Garamond',serif;font-weight:400;
+    font-size:clamp(23px,2.4vw,29px);line-height:1.3;color:var(--navy);margin-top:22px;
+  }
+  .work .what{font-size:clamp(16px,1.5vw,17.5px);color:#463f36;margin-top:8px;max-width:52ch;}
+  /* the same underline that answers the header's Enquire link, so a project
+     card and the rest of the page agree about what a link does */
+  .work .visit{
+    display:inline-block;margin-top:15px;position:relative;padding-bottom:5px;
+    font-family:'Jost',sans-serif;font-size:10.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--brass-ink);
+  }
+  .work .visit::after{
+    content:'';position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--brass);
+    transform:scaleX(0);transform-origin:right;transition:transform .7s var(--ease);
+  }
+  .work .piece:hover .visit::after{transform:scaleX(1);transform-origin:left;}
+  .work .piece:focus-visible{outline:2px solid var(--brass-ink);outline-offset:6px;}
+
   /* ─────────── selectivity ─────────── */
   /* One navy the whole way across. There was a brass radial over the right
      60% here, and because the section is not positioned it escaped its own
@@ -400,7 +536,12 @@
   .select h2.display{color:var(--ivory);}
   .select h2.display em{color:var(--brass);}
   .select p.body{color:rgba(243,236,221,.72);}
-  .select .label{display:block;margin-bottom:26px;}
+  /* brass-ink is the ivory-safe brass: dark enough to clear 4.5:1 on cream,
+     and at 3.10:1 on this navy it is the one place on the page where a label
+     was failing outright. The hero eyebrow, on the same navy, has always used
+     the plain brass - 6.46:1 - so this is the section agreeing with the hero
+     rather than a new colour. */
+  .select .label{display:block;margin-bottom:26px;color:var(--brass);}
 
   /* ─────────── signature ─────────── */
   .sig{margin-top:50px;}
@@ -487,8 +628,6 @@
   footer .fmail:hover{color:var(--brass-lit);}
   footer .fine{font-family:'Jost',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(243,236,221,.55);margin-top:10px;}
 
-  @media (max-width:900px){
-  }
   @media (max-width:640px){
     body{font-size:18px;}
     header .hmark{font-size:23px;}
@@ -517,8 +656,9 @@
     *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;animation-play-state:running!important;}
     html{scroll-behavior:auto;}
     /* `forwards` on the h1 applies to settle, not to sheen — so sheen snaps back
-       to background-position 0, which with background-size:260% exposes the dark
-       end of the ramp at 3.2:1. Pin it to the bright middle instead. */
+       to background-position 0, which with background-size:260% parks the dark
+       end of the ramp across the mark. It clears 3:1 now either way, but the
+       bright middle is what the mark is meant to look like at rest. */
     .hero h1{filter:none;opacity:1;background-position:50% 0;}
     .hero .rule{width:70px;}
     .hero .eyebrow,.hero .tag,.hero .card{opacity:1;}
@@ -686,6 +826,61 @@
       <p class="body r">You will not be handed a page builder or asked to pick a layout. We design it, show it to you, and refine it with you until it is right. You focus on running your business as you know best and we will take care of the rest.</p>
       <p class="body r">Everything is crafted for your business, custom-made.</p>
     </div>
+  </div>
+</section>
+
+<!-- ───────────── work ─────────────
+     THE PORTFOLIO. Off until there is something to put in it.
+
+     It is finished, not a placeholder: the styles are in the stylesheet above,
+     the reveal, the heading animation, the grid at one/two/three projects, the
+     hover and the focus ring all work. The section carries `hidden`, so it
+     occupies no height, prints nothing, and is skipped by screen readers — the
+     page below runs straight from the approach into the mission with no gap and
+     no sign anything is missing.
+
+     TO SWITCH IT ON, when the first site is live:
+       1. Put a screenshot in /work/ — see /work/README.txt for size and format.
+       2. Copy the commented card below, once per project, into <ul class="projects">.
+       3. Delete the word `hidden` from the <section> tag.
+     Nothing else needs touching. The scripts already skip a display:none
+     section when they build their list, so the section joins in on reload.
+
+     Two smaller things worth doing at the same time, neither of which the page
+     depends on:
+       · llms.txt has no Work heading yet, because there is nothing to list.
+       · the JSON-LD block in <head> could gain a "hasPart" ItemList of the
+         projects. JSON allows no comments, which is why the note is here.
+
+     If a client's site cannot be linked — an intranet, a rebuild not yet
+     launched, an NDA — swap the <a class="piece"> for a <div class="piece">
+     and drop the "Visit the site" line. Everything else still applies. -->
+<section class="work" id="work" data-nav="Work" data-band="#F3ECDD" hidden>
+  <div class="wrap">
+    <span class="label r">Selected work</span>
+    <h2 class="display r split" style="margin-top:26px;max-width:760px;">A few of the businesses <em>we have dressed</em>.</h2>
+
+    <ul class="projects">
+      <!-- ONE PROJECT — copy this whole <li>, fill it in, remove the comment markers.
+           · alt="" is correct when the screenshot only repeats the name below it.
+             If the picture says something the caption does not, describe that instead.
+           · width and height must be the file's real pixel dimensions. They are
+             what stop the page jumping as the image arrives.
+           · loading="lazy" on every card; the section is never the first screen.
+           · target="_blank" opens the client's site without closing ours. rel is
+             not optional — noopener denies the opened page any handle on this one.
+      <li class="project r">
+        <a class="piece" href="https://the-client.example/" target="_blank" rel="noopener noreferrer">
+          <span class="shot">
+            <img src="/work/the-client.webp" alt="" width="1600" height="1000" loading="lazy" decoding="async">
+          </span>
+          <h3>The Client</h3>
+          <p class="what">One line on what the business is and what the site had to do for it.</p>
+          <span class="visit">Visit the site</span>
+        </a>
+      </li>
+      -->
+    </ul>
   </div>
 </section>
 
@@ -891,8 +1086,14 @@
   /* hero field sinks and fades as you leave it. Scroll-coupled motion is
      precisely what triggers vestibular symptoms, so it is gated. */
   var sea = document.getElementById('sea');
+  /* p pins at 1 for the whole page below the hero, so without this the handler
+     kept writing an identical transform and opacity on every scroll event for
+     four sections' worth of scrolling */
+  var lastP = -1;
   if (!reduce) addEventListener('scroll', function () {
     var p = Math.min(1, scrollY / innerHeight);
+    if (p === lastP) return;
+    lastP = p;
     sea.style.transform = 'translateY(' + (p * 70).toFixed(1) + 'px)';
     sea.style.opacity = (1 - p * 0.85).toFixed(3);
   }, { passive: true });
@@ -1237,8 +1438,16 @@
     document.addEventListener('mouseenter', function () { if (awake) wake(true); });
     addEventListener('blur', function () { wake(false); });
 
+    /* the loop has to keep running to pick the pointer up again, but a
+       still pointer should not cost a style write and a composite every
+       frame — which, on a page someone is reading rather than moving
+       around, is most of the time they are here */
+    var lx = null, ly = null;
     (function follow() {
-      dot.style.transform = 'translate3d(' + px + 'px,' + py + 'px,0)';
+      if (px !== lx || py !== ly) {
+        lx = px; ly = py;
+        dot.style.transform = 'translate3d(' + px + 'px,' + py + 'px,0)';
+      }
       requestAnimationFrame(follow);
     })();
   }

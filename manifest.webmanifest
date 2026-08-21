@@ -1,20 +1,41 @@
 {
+  "id": "/",
   "name": "Mare Leborgne",
   "short_name": "Mare Leborgne",
-  "description": "Sites, sur mesure. Boutique web design for unique Sydney businesses.",
+  "description": "Boutique web design - Sydney. Custom-made tailored sites.",
   "lang": "en-AU",
+  "dir": "ltr",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0B1424",
   "theme_color": "#0B1424",
+  "categories": ["business", "design"],
   "icons": [
     {
       "src": "/apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
