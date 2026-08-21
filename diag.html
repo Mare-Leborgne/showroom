@@ -16,12 +16,12 @@
   *{box-sizing:border-box;margin:0;padding:0;}
   html,body{background:#0B1424;color:#F3ECDD;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;}
 
-  /* fills the visible viewport the same way the hero does */
+  /* fills the viewport the same way the hero does */
   .fill{
-    min-height:100vh;min-height:100dvh;
+    min-height:100vh;min-height:100lvh;
     position:relative;
     background:linear-gradient(#14213D,#0B1424);
-    padding:calc(10px + env(safe-area-inset-top,0px)) 14px calc(10px + env(safe-area-inset-bottom,0px));
+    padding:calc(58px + env(safe-area-inset-top,0px)) 14px calc(96px + env(safe-area-inset-bottom,0px));
   }
   /* magenta hairlines pinned to the very edges of the page box. If the page is
      reaching the physical edges of the screen you will see all four. */
@@ -41,6 +41,7 @@
   td:last-child{text-align:right;font-weight:700;font-size:15px;width:44%;}
   .ok{color:#7CE08A;} .bad{color:#FF7A7A;}
   .note{margin-top:12px;color:rgba(243,236,221,.5);font-size:11px;line-height:1.6;}
+  .sentinel{background:#F3ECDD;color:#211E1A;padding:28px 14px;font-size:12px;line-height:1.6;}
 </style>
 </head>
 <body>
@@ -62,19 +63,26 @@
     </div>
     <div style="font-size:11px;color:rgba(243,236,221,.6);line-height:1.6">
       The pink box at the top is the real header's box. Its background starts at
-      the very top of the page; the text inside it is pushed down by exactly the
-      safe-area inset. If you see empty screen ABOVE the pink box, the page is not
-      reaching the top of the display.
+      the very top of the <em>page</em>, which in a Safari tab begins below the
+      status bar &mdash; Safari owns that band, so the inset below reads 0 and there
+      is nothing to pad down by. Compare against Add&nbsp;to&nbsp;Home&nbsp;Screen,
+      where the page does own the status bar and the inset becomes 47px.
     </div>
   </div>
 
   <p class="note">
-    Pink hairlines mark the four edges of the page box. If the page is reaching the
-    physical screen, all four are visible and touch the edges.<br><br>
-    The green band is exactly how much space iOS reserves for the notch.<br><br>
-    Scroll down a little so the address bar collapses, then screenshot again.
+    Pink hairlines mark the four edges of the page box &mdash; the area the page is
+    actually given, not the physical screen.<br><br>
+    The green band is how much of the notch the <em>page</em> has to clear itself.
+    No band means iOS is clearing it for us.<br><br>
+    Scroll down a little so the address bar collapses, then screenshot again:
+    dvh should climb to match lvh.
   </p>
 </div>
+
+<!-- stands in for .statement, the ivory section directly below the hero. If any
+     cream shows above or beside the address bar, the block above ended early. -->
+<div class="sentinel">IVORY SENTINEL &mdash; no cream should be visible above the address bar</div>
 
 <script>
 (function () {
@@ -115,7 +123,13 @@
     row('100lvh resolves to', px(0, '100lvh'));
     row('supports dvh', CSS.supports('height', '100dvh') ? 'yes' : 'NO',
         CSS.supports('height', '100dvh') ? 'ok' : 'bad');
+    var lvh = parseFloat(px(0, '100lvh')), dvh = parseFloat(px(0, '100dvh'));
+    row('lvh - dvh (bar covers)', Math.round(lvh - dvh) + 'px');
     row('---', '---');
+    var standalone = navigator.standalone === true ||
+                     matchMedia('(display-mode: standalone)').matches;
+    row('display mode', standalone ? 'standalone' : 'browser tab',
+        standalone ? 'ok' : '');
     row('safe-area-inset-top', envv('safe-area-inset-top'));
     row('safe-area-inset-bottom', envv('safe-area-inset-bottom'));
     row('safe-area-inset-left', envv('safe-area-inset-left'));
