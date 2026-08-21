@@ -551,6 +551,18 @@
        now, and copperplate needs the extra size to stay readable at a name
        someone is reading for the first time */
     font-size:clamp(38px,5vw,54px);color:var(--brass);line-height:1.3;padding-bottom:.08em;
+    /* it is a link now, and it should not look like one. inline-block so the
+       whole signature is the target rather than the text's own line box; the
+       colour lift on hover is the same one the hero address and the footer
+       address already use, so the page has one way of saying "this goes
+       somewhere". The focus ring is handled above: .select a:focus-visible
+       already swaps the brass-ink outline for brass, which is what stays
+       visible against this navy. */
+    display:inline-block;text-decoration:none;
+    transition:color .55s var(--ease);
+  }
+  @media (hover:hover) and (pointer:fine){
+    .sig .nm:hover{color:var(--brass-lit);}
   }
   .sig .rl{
     font-family:'Jost',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;
@@ -770,6 +782,9 @@
       "@id": "https://mareleborgne.com/#augusto",
       "name": "Augusto Leborgne",
       "jobTitle": "Founder",
+      "sameAs": [
+        "https://www.linkedin.com/in/augusto-leborgne"
+      ],
       "worksFor": {
         "@id": "https://mareleborgne.com/#studio"
       }
@@ -915,7 +930,15 @@
       <p class="body r">The digital world is full of templates, generic AI content, and outdated designs. We believe in bringing style, beauty and personality to every digital space we create.</p>
       <p class="body r">I started Mare Leborgne to provide great businesses the digital showroom they deserve. Web design is not only about listing products or showing information, it is about letting the user taste and connect with the brand.</p>
       <div class="sig r">
-        <div class="nm">Augusto Leborgne</div>
+        <!-- No trailing slash: LinkedIn redirects /in/name/ to /in/name, and a
+             link that arrives already canonical saves the visitor a hop.
+             aria-label rather than the bare name, so it is not left to a screen
+             reader to work out where a signature goes and that it leaves the
+             page. noopener denies the opened tab any handle on this one. -->
+        <a class="nm"
+           href="https://www.linkedin.com/in/augusto-leborgne"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Augusto Leborgne on LinkedIn, opens in a new tab">Augusto Leborgne</a>
         <div class="rl">Founder &nbsp;·&nbsp; Mare Leborgne</div>
       </div>
     </div>
