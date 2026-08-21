@@ -80,7 +80,9 @@
     --sal:env(safe-area-inset-left,0px);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
+  /* the canvas colour again, one level up. Some engines take the page tint
+     from the root element rather than from body, so both are set */
+  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;background:var(--navy-deep);}
   body{
     /* Navy, not ivory, even though most of the page is ivory. iOS Safari tints
        the status-bar band and the bottom toolbar band by sampling the page

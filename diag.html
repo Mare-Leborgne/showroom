@@ -51,6 +51,22 @@
 <div class="fill">
   <h1>MARE LEBORGNE · VIEWPORT DIAGNOSTIC</h1>
   <table id="out"></table>
+  <div style="margin-top:14px;padding:10px;border:1px dashed rgba(243,236,221,.3)">
+    <div style="font:600 12px ui-monospace,monospace;color:#B8935A;margin-bottom:6px">MOCK OF THE REAL HEADER</div>
+    <div id="mockbar" style="position:fixed;top:0;left:0;right:0;z-index:97;
+         padding:calc(8px + env(safe-area-inset-top,0px)) 14px 8px;
+         display:flex;justify-content:space-between;align-items:center;
+         background:rgba(255,45,149,.25);font:11px ui-monospace,monospace;color:#fff">
+      <span>NAV CONTENT</span><span>ENQUIRE</span>
+    </div>
+    <div style="font-size:11px;color:rgba(243,236,221,.6);line-height:1.6">
+      The pink box at the top is the real header's box. Its background starts at
+      the very top of the page; the text inside it is pushed down by exactly the
+      safe-area inset. If you see empty screen ABOVE the pink box, the page is not
+      reaching the top of the display.
+    </div>
+  </div>
+
   <p class="note">
     Pink hairlines mark the four edges of the page box. If the page is reaching the
     physical screen, all four are visible and touch the edges.<br><br>
