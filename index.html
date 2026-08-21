@@ -1126,14 +1126,35 @@
     sea.style.opacity = (1 - p * 0.85).toFixed(3);
   }, { passive: true });
 
-  /* ── live Sydney time ── */
+  /* ── the studio's own clock ──
+     Sydney's hour, whoever is reading. The timeZone option does the conversion
+     from the visitor's machine, so someone in London sees the time it is here
+     rather than the time it is there, and it follows AEST and AEDT on its own
+     without a rule in this file.
+
+     hourCycle h23 rather than hour12:false: false is permitted to resolve to
+     h24, which prints 24:07 for seven minutes past midnight instead of 00:07.
+     h23 is the cycle that counts 00 to 23. en-GB is a 24-hour locale to begin
+     with, so even an engine that ignored hourCycle would not fall back to
+     am/pm — the format cannot come out wrong in two independent ways. */
+  var clockFmt;
+  try {
+    clockFmt = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Australia/Sydney', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+    });
+  } catch (e) {}
+
   function tick() {
     try {
-      document.getElementById('clock').textContent = '· ' + new Date().toLocaleTimeString('en-AU',
-        { timeZone: 'Australia/Sydney', hour: 'numeric', minute: '2-digit' }).toLowerCase();
-    } catch (e) {}
+      document.getElementById('clock').textContent = '· ' + clockFmt.format(new Date());
+    } catch (e) { return; }   /* no Intl, no time zone data: leave it blank
+                                 rather than print the visitor's own hour and
+                                 call it Sydney */
+    /* the reading only changes on the minute, so wait for the boundary rather
+       than polling twice a minute and still being up to thirty seconds late */
+    setTimeout(tick, 60000 - (Date.now() % 60000) + 200);
   }
-  tick(); setInterval(tick, 30000);
+  tick();
 
   /* ── split headings into words so they can assemble ── */
   document.querySelectorAll('.split').forEach(function (el) {
