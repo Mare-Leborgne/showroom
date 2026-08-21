@@ -146,13 +146,15 @@
   header{
     position:fixed;top:0;left:0;right:0;z-index:100;
     display:flex;align-items:center;justify-content:space-between;
-    padding:20px clamp(24px,6vw,64px);
+    padding:16px clamp(24px,6vw,64px);
     background:rgba(11,20,36,.9);
     backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
     transform:translateY(-101%);transition:transform 1s var(--ease);
   }
   header.visible{transform:translateY(0);}
-  header .hmark{font-family:'Pinyon Script',cursive;font-size:27px;color:var(--brass);line-height:1;text-decoration:none;display:inline-block;padding:5px 2px;}
+  /* padding at every width, not only under the coarse-pointer query: a touch
+     device reporting hover:hover would otherwise get a 37px target here */
+  header .hmark{font-family:'Pinyon Script',cursive;font-size:27px;color:var(--brass);line-height:1;text-decoration:none;display:inline-block;padding:9px 4px;}
   header a.henq{
     font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
     color:var(--ivory);text-decoration:none;position:relative;
@@ -231,7 +233,11 @@
      size read as a button rather than a calling card. It arrives last, once
      everything above it has settled. */
   .hero .card{
-    display:inline-block;margin-top:38px;
+    /* padding, not margin, and at every width rather than behind a media query:
+       a touch device wider than 820px that also reports hover:hover would
+       otherwise get a 26px target, and an invisible hit area costs a desktop
+       nothing. margin-top absorbs the padding so the gap above looks the same */
+    display:inline-block;margin-top:28px;padding:10px 0;
     font-family:'Cormorant Garamond',serif;font-weight:300;
     font-size:clamp(15.5px,1.8vw,19px);letter-spacing:.045em;
     text-decoration:none;color:var(--brass);
@@ -244,7 +250,7 @@
   /* the line box is ~25px, under the 44px a thumb needs. Padding grows only the
      tap target, so nothing moves visually */
   @media (max-width:820px),(hover:none){
-    .hero .card{margin-top:30px;padding:10px 0;}
+    .hero .card{margin-top:20px;}
   }
 
 
