@@ -1,0 +1,36 @@
+# What GitHub Pages publishes to mareleborgne.com.
+#
+# Everything in this repository is served as a static file unless it is listed
+# here, so this file — not robots.txt — is what decides whether a thing is
+# reachable at all. robots.txt only asks well-behaved crawlers not to look.
+#
+# Jekyll is doing the excluding, which is why there is no .nojekyll file. It
+# copies any file without YAML front matter through untouched, and nothing here
+# has front matter, so no page is processed or altered on the way out.
+
+exclude:
+  # The brand kit. Not secret, but not the studio's shop window either: the
+  # logo files, the sources, the typeface and the generators are for whoever
+  # is making something, not for a stranger who guessed a URL.
+  - brand/
+
+  # Build sources for the icons and the share card. They exist to be
+  # screenshotted, and they render a broken half-page in a browser.
+  - og-card.html
+  - icon-card.html
+  - rebuild-icons.js
+
+  # Never publish the tooling, if any of it ever lands here.
+  - node_modules/
+  - package.json
+  - package-lock.json
+  - Gemfile
+  - Gemfile.lock
+
+include:
+  # The one exception, and it is load-bearing: this image is fetched from
+  # mareleborgne.com by the mail client of every person who has ever received
+  # an email from the studio. If it stops resolving, the wordmark breaks in all
+  # of them at once, retroactively. It stays public.
+  - brand/email/wordmark-signature.png
+  - brand/email/wordmark-signature-dark.png
