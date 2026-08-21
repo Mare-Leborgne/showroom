@@ -45,6 +45,17 @@
      cannot load a webfont, so the wordmark could never be used here -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B1424'/%3E%3Cg fill='none' stroke='%23B8935A' stroke-linecap='round'%3E%3Cpath d='M4 12.5c4-4.5 8-4.5 12 0s8 4.5 12 0' stroke-width='2.6'/%3E%3Cpath d='M4 21c4-4.5 8-4.5 12 0s8 4.5 12 0' stroke-width='1.8' stroke-opacity='.55'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<!-- Added to the Home Screen the page owns the whole display: 844px rather than
+     the 739 Safari lends a tab, and env(safe-area-inset-*) finally reports the
+     47px notch and the 34px home indicator instead of 0. black-translucent is
+     what puts the content under the status bar rather than below it, and the
+     --sat/--sab padding already in the stylesheet is what keeps the text clear
+     of both. In an ordinary tab none of this applies and none of it does harm. -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mare Leborgne">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1274,6 +1285,9 @@ if (location.search.indexOf('debug') > -1) (function () {
                        + ' / ' + probe('env(safe-area-inset-bottom,0px)'),
       'theme-color   ' + (meta ? meta.content : 'none'),
       'prefers dark  ' + matchMedia('(prefers-color-scheme: dark)').matches,
+      'display mode  ' + (navigator.standalone === true
+                          || matchMedia('(display-mode: standalone)').matches
+                          ? 'STANDALONE' : 'browser tab'),
       '------------------------------',
       'Cream BELOW the cyan line = Safari chrome.',
       'Cream between MAGENTA and CYAN = statement.'
