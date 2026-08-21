@@ -263,9 +263,19 @@
   /* Just enough to keep the mark off the contour lines. Wider and far weaker
      than it was: at .78 over 44% the falloff read as a disc sitting behind the
      wordmark rather than as depth in the water. */
+  /* The scrim sits above the sea, so the two edge fades belong here rather than
+     on the hero's own background: they have to cover the contour lines, not sit
+     under them. Safari keeps the top 47px and bottom 58px of the screen for its
+     own strips and fills them flat with the page colour. The sea used to run
+     hard into that boundary and stop, which is what read as the hero ending
+     early. Fading it to the same navy-deep over the last 88px means the strips
+     and the hero meet on one flat colour and the join stops being visible. */
   .hero .scrim{
     position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:radial-gradient(62% 54% at 50% 44%, rgba(11,20,36,.38) 0%, rgba(11,20,36,.19) 50%, rgba(11,20,36,0) 80%);
+    background:
+      linear-gradient(to bottom, var(--navy-deep) 0, rgba(11,20,36,0) 88px),
+      linear-gradient(to top, var(--navy-deep) 0, rgba(11,20,36,0) 88px),
+      radial-gradient(62% 54% at 50% 44%, rgba(11,20,36,.38) 0%, rgba(11,20,36,.19) 50%, rgba(11,20,36,0) 80%);
   }
   .hero .inner{position:relative;z-index:2;}
   .hero .eyebrow{
