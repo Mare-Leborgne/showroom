@@ -229,30 +229,28 @@
 
   /* ─────────── hero ─────────── */
   .hero{
-    /* lvh for the box, dvh for the centring, and both are needed.
-       Safari paints the strip its floating address bar covers, so a hero only
-       dvh tall leaves the ivory section showing through there on first paint --
-       the white bar under the hero. lvh is the full box and covers it.
-       That alone would centre the mark in 739 while only 699 is seen, which is
-       what left a void over the bar last time, so the covered strip comes off
-       the bottom padding again below. */
+    /* lvh, so the hero is as tall as the screen ever gets. Safari paints the
+       strip its floating address bar covers, and a hero only dvh tall stopped
+       short of it and let the ivory section show through -- the white bar.
+       100vh first for anything too old to know lvh; on iOS that already
+       resolves to the large viewport, so the two agree. */
     min-height:100vh;min-height:100lvh;position:relative;isolation:isolate;
     display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
     background:
       linear-gradient(to bottom, var(--navy-deep) 0, rgba(11,20,36,0) 96px),
       radial-gradient(125% 95% at 50% 12%, #1c2b46 0%, var(--navy) 44%, var(--navy-deep) 100%);
     color:var(--ivory);overflow:hidden;
-    padding:calc(112px + var(--sat)) calc(24px + var(--sar)) calc(140px + var(--sab) + (100lvh - 100dvh)) calc(24px + var(--sal));
+    padding:calc(112px + var(--sat)) calc(24px + var(--sar)) calc(140px + var(--sab)) calc(24px + var(--sal));
   }
   /* a short screen — any phone in landscape — cannot afford 250px of padding */
   @media (max-height:620px){
-    .hero{padding-top:calc(74px + var(--sat));padding-bottom:calc(80px + var(--sab) + (100lvh - 100dvh));}
+    .hero{padding-top:calc(74px + var(--sat));padding-bottom:calc(80px + var(--sab));}
   }
   /* a phone turned sideways is barely 375px tall. Padding alone will not buy
      that back, so the mark comes down too: otherwise the hero grows past the
      screen and the address has to be scrolled to. */
   @media (max-height:480px){
-    .hero{padding-top:calc(30px + var(--sat));padding-bottom:calc(32px + var(--sab) + (100lvh - 100dvh));}
+    .hero{padding-top:calc(30px + var(--sat));padding-bottom:calc(32px + var(--sab));}
     .hero .eyebrow{margin-bottom:12px;}
     /* bounded by height as well as width: sized on vw alone, a wider landscape
        phone gets a bigger mark than a narrow one and overflows the shorter
