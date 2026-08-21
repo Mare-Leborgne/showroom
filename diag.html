@@ -34,10 +34,11 @@
   .safe{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:rgba(0,255,120,.35);z-index:98;}
 
   h1{font:600 15px/1.4 ui-monospace,monospace;color:#B8935A;margin-bottom:10px;letter-spacing:.05em;}
-  table{border-collapse:collapse;width:100%;}
-  td{padding:3px 4px;border-bottom:1px solid rgba(243,236,221,.12);vertical-align:top;}
-  td:first-child{color:rgba(243,236,221,.55);white-space:nowrap;}
-  td:last-child{text-align:right;font-weight:600;}
+  table{border-collapse:collapse;width:100%;table-layout:fixed;}
+  td{padding:2px 0;border-bottom:1px solid rgba(243,236,221,.12);vertical-align:top;
+     word-break:break-all;white-space:normal;}
+  td:first-child{color:rgba(243,236,221,.55);font-size:11px;width:56%;}
+  td:last-child{text-align:right;font-weight:700;font-size:15px;width:44%;}
   .ok{color:#7CE08A;} .bad{color:#FF7A7A;}
   .note{margin-top:12px;color:rgba(243,236,221,.5);font-size:11px;line-height:1.6;}
 </style>
@@ -128,7 +129,9 @@
         fills ? 'ok' : 'bad');
     row('scrollY', Math.round(scrollY) + 'px');
     row('---', '---');
-    row('userAgent', navigator.userAgent.replace(/</g, '&lt;'));
+    t.insertAdjacentHTML('beforeend',
+      '<tr><td colspan="2" style="font-size:10px;text-align:left;font-weight:400;color:rgba(243,236,221,.5)">' +
+      navigator.userAgent.replace(/</g, '&lt;') + '</td></tr>');
   }
   draw();
   addEventListener('resize', draw);
