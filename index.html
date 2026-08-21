@@ -351,6 +351,23 @@
 
   /* ─────────── application ─────────── */
   .apply{background:var(--ivory-2);}
+  /* Four plain facts, set as a table rather than as cards. No boxes, no icons
+     and no accordion: those are what make a reassurance read as marketing.
+     A hairline above each is enough to separate them. */
+  .assure{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:0 clamp(28px,5vw,64px);margin-top:52px;max-width:880px;
+  }
+  .assure .as{padding:22px 0 24px;border-top:1px solid rgba(20,33,61,.14);}
+  .assure h3{
+    font-family:'Jost',sans-serif;font-weight:400;font-size:10.5px;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--brass-ink);
+    margin-bottom:9px;
+  }
+  .assure p{font-size:16px;line-height:1.65;color:#4a4438;}
+  @media (max-width:760px){
+    .assure{grid-template-columns:1fr;margin-top:38px;}
+  }
   form{margin-top:52px;max-width:660px;}
   .field{margin-bottom:38px;position:relative;}
   .field label{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:var(--navy);margin-bottom:10px;transition:color .5s var(--ease);}
@@ -467,33 +484,114 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "@id": "https://mareleborgne.com/#studio",
-  "name": "Mare Leborgne",
-  "url": "https://mareleborgne.com/",
-  "image": "https://mareleborgne.com/og.png",
-  "description": "Boutique web design for unique Sydney businesses. Sites made to measure, never from a template.",
-  "slogan": "Sites, sur mesure.",
-  "inLanguage": "en-AU",
-  "email": "hello@mareleborgne.com",
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "contactType": "sales",
-    "email": "hello@mareleborgne.com",
-    "areaServed": "AU"
-  },
-  "founder": { "@type": "Person", "name": "Augusto Leborgne" },
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Sydney",
-    "addressRegion": "NSW",
-    "addressCountry": "AU"
-  },
-  "areaServed": [
-    { "@type": "City", "name": "Sydney" },
-    { "@type": "State", "name": "New South Wales" }
-  ],
-  "serviceType": ["Web design", "Web development"]
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://mareleborgne.com/#studio",
+      "name": "Mare Leborgne",
+      "url": "https://mareleborgne.com/",
+      "image": "https://mareleborgne.com/og.png",
+      "description": "Boutique web design studio in Sydney. Bespoke websites designed and built for one business at a time, never from a template.",
+      "slogan": "Sites, sur mesure.",
+      "inLanguage": "en-AU",
+      "email": "hello@mareleborgne.com",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "email": "hello@mareleborgne.com",
+        "areaServed": "AU"
+      },
+      "founder": {
+        "@id": "https://mareleborgne.com/#augusto"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Sydney",
+        "addressRegion": "NSW",
+        "addressCountry": "AU"
+      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Sydney"
+        },
+        {
+          "@type": "State",
+          "name": "New South Wales"
+        }
+      ],
+      "serviceType": [
+        "Web design",
+        "Web development"
+      ],
+      "knowsAbout": [
+        "Bespoke web design",
+        "Custom website development",
+        "Typography",
+        "Brand-led web design"
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://mareleborgne.com/#augusto",
+      "name": "Augusto Leborgne",
+      "jobTitle": "Founder",
+      "worksFor": {
+        "@id": "https://mareleborgne.com/#studio"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://mareleborgne.com/#website",
+      "url": "https://mareleborgne.com/",
+      "name": "Mare Leborgne",
+      "inLanguage": "en-AU",
+      "publisher": {
+        "@id": "https://mareleborgne.com/#studio"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://mareleborgne.com/#faq",
+      "isPartOf": {
+        "@id": "https://mareleborgne.com/#website"
+      },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What happens at the first conversation with Mare Leborgne?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It costs nothing and commits you to nothing. The studio takes on only a few projects at a time, so some enquiries end in a recommendation elsewhere."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I see the design before the site is built?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The design is shown and agreed before anything is built, so the direction is settled while it is still easy to change."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How are changes and revisions handled?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Refining the design with you is part of the project rather than an extra. It is not finished until it is right."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who owns the website, domain and hosting at the end?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You do. The domain, hosting, files and logins are in your name from the start, and you are given a walkthrough so you can edit your own content."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
 </head>
@@ -543,12 +641,12 @@
 <section class="approach" id="approach" data-nav="Approach">
   <div class="wrap">
     <span class="label r">The approach</span>
-    <h2 class="display r split" style="margin-top:26px;max-width:840px;">Focus on what you know best. <em>We will do the rest.</em></h2>
+    <h2 class="display r split" style="margin-top:26px;max-width:840px;">Focus on what you know best. <em>We&rsquo;ll do the rest.</em></h2>
     <div class="prose">
-      <p class="lede r">Before anything is drawn, we spend time on the business itself: how it works, who it is for, what it feels like to walk in, and the things nobody thinks to put in a brief. Everything that follows comes from there.</p>
-      <p class="body r">The aim is a site that leaves someone with the impression they would have had standing in front of the real thing. Typography, pace, colour and wording are chosen for one business only, so that arriving on the page feels like arriving somewhere rather than reading about it.</p>
-      <p class="body r">You will not be handed a page builder or asked to choose a layout. We design it, show it to you, and keep working until it is right. Deciding how it should look is the part you are handing over, and it is the part we do best.</p>
-      <p class="body r">Nothing is bought in and reskinned, and there is no template underneath. From the first conversation to the finished site in your own name, it is handled end to end.</p>
+      <p class="lede r">We carry the design process from end to end. Before anything is drawn we study the business itself: how it works, what its character is, what it values, and what it is actually like to deal with.</p>
+      <p class="body r">Then we design a site that gives your visitor the feeling of being there. Walking into the room, handling the product, being looked after by you. The nearest thing on a screen to the experience itself.</p>
+      <p class="body r">You will not be handed a page builder or asked to pick a layout. We design it, show it to you, and refine it with you until it is right. Deciding how it should look is the part you are handing over, and it is the part we do best.</p>
+      <p class="body r">Everything is made for one business. Nothing bought in, nothing reskinned, no template underneath.</p>
     </div>
   </div>
 </section>
@@ -557,11 +655,11 @@
 <section class="select" id="mission" data-nav="Our Mission">
   <div class="wrap narrow" style="position:relative;z-index:2;">
     <span class="label r">Our Mission</span>
-    <h2 class="display r split">To design with style, in a <em>world full of repetition</em>.</h2>
+    <h2 class="display r split">A unique web presence with style, in a <em>world full of repetition</em>.</h2>
     <div class="after" style="margin-top:40px;">
-      <p class="body r">A business with real character deserves more than a page that lists what it does. It deserves somewhere a visitor can feel what the place is like and why it is the way it is, and want to stay a moment longer than they meant to.</p>
-      <p class="body r">Templates and generated pages are everywhere now, and they arrive at the same few answers. Style is not decoration against that. It is the thing that says a person made this, for this, and for no one else.</p>
-      <p class="body r">We expect it everywhere else: buildings worth walking past, objects worth keeping, a room you are happy to sit in. A website is where most people meet a business first, and it is the one place we still accept the generic.</p>
+      <p class="body r">Great businesses and real crafts deserve more than a page that lists what they do. They deserve a site where someone connects with their character and their values, and immerses themselves in the experience instead of skimming past it.</p>
+      <p class="body r">In a world full of templates and AI, we need stylish, custom-made web presence the same way we need good architecture, great products and wonderful experiences. Style is not decoration. It is the part that says a person made this, for this.</p>
+      <p class="body r">I started Mare Leborgne to bring style to the digital world, and to give businesses the digital showroom they deserve.</p>
       <div class="sig r">
         <div class="nm">Augusto Leborgne</div>
         <div class="rl">Founder &nbsp;·&nbsp; Mare Leborgne</div>
@@ -576,6 +674,28 @@
     <span class="label r">Enquire</span>
     <h2 class="display r split" style="margin-top:26px;max-width:720px;">Tell us about what you have built.</h2>
     <p class="body r" style="margin-top:26px;">This is the start of a conversation rather than a quote request. Answer as briefly or as fully as you like.</p>
+
+    <!-- The four things people want to know before they write, and never ask.
+         Placed above the form on purpose: they are what decides whether the
+         form gets filled in at all. -->
+    <div class="assure r">
+      <div class="as">
+        <h3>The first conversation</h3>
+        <p>Costs nothing and commits you to nothing. We take on only a few projects at a time, so some enquiries end in a recommendation elsewhere.</p>
+      </div>
+      <div class="as">
+        <h3>You see it before it is built</h3>
+        <p>The design is shown and agreed first, so the direction is settled while it is still easy to change.</p>
+      </div>
+      <div class="as">
+        <h3>Changes are the work</h3>
+        <p>Refining it with you is part of the project, not an extra. It is not finished until it is right.</p>
+      </div>
+      <div class="as">
+        <h3>Everything is in your name</h3>
+        <p>Domain, hosting, files and logins, yours from the start, with a walkthrough so you can edit your own content.</p>
+      </div>
+    </div>
 
     <form id="enq" class="r" method="post" action="https://api.web3forms.com/submit">
       <!-- Delivery. Web3Forms takes the submission and emails it to the studio,

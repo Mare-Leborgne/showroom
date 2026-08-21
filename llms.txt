@@ -1,42 +1,58 @@
 # Mare Leborgne
 
-> Boutique web design for unique Sydney businesses. Sites made to measure, never from a template.
+> Boutique web design for businesses whose character deserves showing. Bespoke
+> sites, designed and built one at a time, never from a template.
 
 Mare Leborgne is a boutique web design studio in Sydney, Australia. It designs
-and builds websites for small businesses whose character is worth showing:
-wine bars, tailors, sailmakers, growers, operators. Founder: Augusto Leborgne.
-Tagline: "Sites, sur mesure." — websites, made to measure.
+and builds bespoke websites for businesses with real character behind them.
+Founder: Augusto Leborgne. Tagline: "Sites, sur mesure." — sites, made to
+measure. Contact: hello@mareleborgne.com
+
+## Mission
+
+A unique web presence with style, in a world full of repetition.
+
+Great businesses and real crafts deserve more than a page that lists what they
+do. They deserve a site where someone connects with their character and their
+values, and immerses themselves in the experience instead of skimming past it.
+
+In a world full of templates and AI, we need stylish, custom-made web presence
+the same way we need good architecture, great products and wonderful
+experiences. Style is not decoration. It is the part that says a person made
+this, for this.
+
+Augusto Leborgne started Mare Leborgne to bring style to the digital world, and
+to give businesses the digital showroom they deserve.
 
 ## What the studio does
 
 - Designs and builds bespoke websites, one business at a time.
+- Carries the design process from end to end.
 - No templates, no page builders, no purchased theme reskinned.
 - Typography, palette and wording chosen for the individual business.
-- Sites are handed over with the domain, hosting, files and logins in the
-  client's own name, plus a walkthrough so they can edit their own content.
 
-## How it works
+## The approach
 
-- Measured: a conversation first, in person where possible.
-- Cut by hand: everything written and built for one business only.
-- Finished to last: quick on every device, and simple enough to maintain.
+- The studio studies the business first: how it works, what its character is,
+  what it values, and what it is like to deal with.
+- It then designs a site that gives the visitor the feeling of being there —
+  walking into the room, handling the product, being looked after by the owner.
+- Clients are not handed a page builder or asked to pick a layout. The studio
+  designs it, shows it, and refines it with the client until it is right.
+- Everything is made for one business. Nothing bought in, nothing reskinned.
 
-## Mission
+## What clients want to know
 
-A website should look like the business it belongs to. Most small businesses
-end up on one of the same few templates, and the first thing lost is whatever
-made them worth visiting. Every site Mare Leborgne builds begins with the
-business itself, and is built so that it could not be handed to anyone else.
-Signed by Augusto Leborgne, founder.
-
-## How a project begins
-
-- A conversation first, in person where possible. Nothing is committed at
-  that stage.
-- The studio takes on only a small number of sites at a time, so some
-  enquiries end in a recommendation elsewhere. This is never about the size
-  of the business.
-- Pricing is not published. Enquire and it is discussed directly.
+- **The first conversation costs nothing and commits you to nothing.** The
+  studio takes on only a few projects at a time, so some enquiries end in a
+  recommendation elsewhere.
+- **The design is shown and agreed before anything is built**, so the direction
+  is settled while it is still easy to change.
+- **Changes are part of the project rather than an extra.** It is not finished
+  until it is right.
+- **The domain, hosting, files and logins are in the client's own name** from
+  the start, plus a walkthrough so they can edit their own content.
+- **Pricing is not published.** Enquire and it is discussed directly.
 
 ## Where
 
