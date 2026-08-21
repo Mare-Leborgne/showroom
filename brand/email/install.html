@@ -6,8 +6,11 @@
 <title>Email signature · Mare Leborgne</title>
 <meta name="robots" content="noindex, nofollow">
 <!-- The copy button is an inline script, so 'unsafe-inline' is required here;
-     everything else stays shut, and the wordmark is served from this origin. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; form-action 'none'; upgrade-insecure-requests">
+     everything else stays shut. mareleborgne.com is named in img-src as well as
+     'self' because the signature has to carry an absolute URL to survive being
+     pasted into Gmail - and naming it means this page also previews correctly
+     when it is opened from a local copy rather than from the live site. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://mareleborgne.com; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
@@ -83,11 +86,17 @@ Sydney, Australia</pre>
       })]);
       btn.textContent = 'Copied — now paste into Gmail';
     } catch (e) {
-      // older browsers: fall back to selecting it, so the manual route still works
+      /* Chrome refuses the Clipboard API unless it is satisfied the click was
+         a real one, so this is a normal path rather than an error path: select
+         the signature and let the old command copy it, which carries the
+         formatting just as well. Clear the selection if that worked, and leave
+         it standing if it did not, so there is something to press Ctrl+C on. */
       var r = document.createRange(); r.selectNodeContents(document.getElementById('sig'));
-      var s = getSelection(); s.removeAllRanges(); s.addRange(r);
-      try { document.execCommand('copy'); btn.textContent = 'Copied — now paste into Gmail'; }
-      catch (e2) { btn.textContent = 'Select it above and copy'; }
+      var sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e2) { ok = false; }
+      if (ok) { sel.removeAllRanges(); btn.textContent = 'Copied — now paste into Gmail'; }
+      else { btn.textContent = 'Selected — press Ctrl+C to copy'; }
     }
     setTimeout(function () { btn.textContent = 'Copy signature'; }, 4000);
   });
