@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Viewport diagnostic</title>
+<!--
+  Throwaway page. It exists to read the real numbers off a real phone, because
+  the notch insets and the address-bar behaviour that decide whether the hero
+  can fill the screen are not observable in a desktop browser at all.
+
+  Delete once the hero is behaving.
+-->
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:#0B1424;color:#F3ECDD;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;}
+
+  /* fills the visible viewport the same way the hero does */
+  .fill{
+    min-height:100vh;min-height:100dvh;
+    position:relative;
+    background:linear-gradient(#14213D,#0B1424);
+    padding:calc(10px + env(safe-area-inset-top,0px)) 14px calc(10px + env(safe-area-inset-bottom,0px));
+  }
+  /* magenta hairlines pinned to the very edges of the page box. If the page is
+     reaching the physical edges of the screen you will see all four. */
+  .edge{position:fixed;background:#FF2D95;z-index:99;}
+  .edge.t{top:0;left:0;right:0;height:3px;}
+  .edge.b{bottom:0;left:0;right:0;height:3px;}
+  .edge.l{left:0;top:0;bottom:0;width:3px;}
+  .edge.r{right:0;top:0;bottom:0;width:3px;}
+  /* a green band exactly where the safe area says the notch ends */
+  .safe{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:rgba(0,255,120,.35);z-index:98;}
+
+  h1{font:600 15px/1.4 ui-monospace,monospace;color:#B8935A;margin-bottom:10px;letter-spacing:.05em;}
+  table{border-collapse:collapse;width:100%;}
+  td{padding:3px 4px;border-bottom:1px solid rgba(243,236,221,.12);vertical-align:top;}
+  td:first-child{color:rgba(243,236,221,.55);white-space:nowrap;}
+  td:last-child{text-align:right;font-weight:600;}
+  .ok{color:#7CE08A;} .bad{color:#FF7A7A;}
+  .note{margin-top:12px;color:rgba(243,236,221,.5);font-size:11px;line-height:1.6;}
+</style>
+</head>
+<body>
+
+<div class="edge t"></div><div class="edge b"></div>
+<div class="edge l"></div><div class="edge r"></div>
+<div class="safe"></div>
+
+<div class="fill">
+  <h1>MARE LEBORGNE · VIEWPORT DIAGNOSTIC</h1>
+  <table id="out"></table>
+  <p class="note">
+    Pink hairlines mark the four edges of the page box. If the page is reaching the
+    physical screen, all four are visible and touch the edges.<br><br>
+    The green band is exactly how much space iOS reserves for the notch.<br><br>
+    Scroll down a little so the address bar collapses, then screenshot again.
+  </p>
+</div>
+
+<script>
+(function () {
+  var t = document.getElementById('out');
+  function px(el, prop) {
+    var d = document.createElement('div');
+    d.style.cssText = 'position:absolute;visibility:hidden;height:' + prop;
+    document.body.appendChild(d);
+    var v = getComputedStyle(d).height;
+    d.remove();
+    return v;
+  }
+  function envv(name) {
+    var d = document.createElement('div');
+    d.style.cssText = 'position:absolute;visibility:hidden;height:env(' + name + ',0px)';
+    document.body.appendChild(d);
+    var v = getComputedStyle(d).height;
+    d.remove();
+    return v;
+  }
+  function row(k, v, cls) {
+    t.insertAdjacentHTML('beforeend',
+      '<tr><td>' + k + '</td><td class="' + (cls || '') + '">' + v + '</td></tr>');
+  }
+  function draw() {
+    t.innerHTML = '';
+    var fill = document.querySelector('.fill').getBoundingClientRect();
+    var vv = window.visualViewport;
+    row('window.innerHeight', innerHeight + 'px');
+    row('documentElement.clientHeight', document.documentElement.clientHeight + 'px');
+    row('visualViewport.height', vv ? Math.round(vv.height) + 'px' : 'unsupported');
+    row('visualViewport.offsetTop', vv ? Math.round(vv.offsetTop) + 'px' : '-');
+    row('screen.height', screen.height + 'px');
+    row('devicePixelRatio', devicePixelRatio);
+    row('---', '---');
+    row('100dvh resolves to', px(0, '100dvh'));
+    row('100svh resolves to', px(0, '100svh'));
+    row('100lvh resolves to', px(0, '100lvh'));
+    row('supports dvh', CSS.supports('height', '100dvh') ? 'yes' : 'NO',
+        CSS.supports('height', '100dvh') ? 'ok' : 'bad');
+    row('---', '---');
+    row('safe-area-inset-top', envv('safe-area-inset-top'));
+    row('safe-area-inset-bottom', envv('safe-area-inset-bottom'));
+    row('safe-area-inset-left', envv('safe-area-inset-left'));
+    row('safe-area-inset-right', envv('safe-area-inset-right'));
+    row('---', '---');
+    row('filled block height', Math.round(fill.height) + 'px');
+    row('filled block top', Math.round(fill.top) + 'px',
+        Math.round(fill.top) === 0 ? 'ok' : 'bad');
+    var fills = Math.abs(fill.height - innerHeight) <= 1;
+    row('block == innerHeight', fills ? 'YES' : 'NO (' + Math.round(fill.height - innerHeight) + 'px out)',
+        fills ? 'ok' : 'bad');
+    row('scrollY', Math.round(scrollY) + 'px');
+    row('---', '---');
+    row('userAgent', navigator.userAgent.replace(/</g, '&lt;'));
+  }
+  draw();
+  addEventListener('resize', draw);
+  addEventListener('scroll', draw, { passive: true });
+  if (window.visualViewport) {
+    visualViewport.addEventListener('resize', draw);
+    visualViewport.addEventListener('scroll', draw);
+  }
+})();
+</script>
+</body>
+</html>
