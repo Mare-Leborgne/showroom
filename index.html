@@ -1219,5 +1219,77 @@
 })();
 </script>
 
+<!-- ─────────── TEMPORARY: ?debug=1 only ───────────
+     Runs for nobody unless the URL asks for it, so it is safe on the live site.
+     It draws the edges of the page box against the edges of the hero, because
+     the one thing that cannot be measured from a desktop is whether the cream
+     strip under the hero is inside the page or is Safari's own chrome.
+     Delete this block once that is settled. -->
+<script>
+if (location.search.indexOf('debug') > -1) (function () {
+  var NL = String.fromCharCode(10);
+  function mk(css) {
+    var d = document.createElement('div');
+    d.style.cssText = css;
+    document.body.appendChild(d);
+    return d;
+  }
+  var FIX = 'position:fixed;left:0;right:0;height:4px;z-index:99999;pointer-events:none;';
+  var ABS = 'position:absolute;left:0;right:0;height:4px;z-index:99999;pointer-events:none;';
+  mk(FIX + 'top:0;background:#FF9500;');     /* orange  = top of the page box    */
+  mk(FIX + 'bottom:0;background:#00E5FF;');  /* cyan    = bottom of the page box  */
+  var hero = document.querySelector('.hero');
+  var st   = document.querySelector('.statement');
+  var mag  = mk(ABS + 'background:#FF2D95;');  /* magenta = bottom edge of hero      */
+  var lime = mk(ABS + 'background:#7CFF3D;');  /* lime    = top edge of .statement   */
+  var panel = mk('position:fixed;left:8px;right:8px;top:38%;z-index:99999;'
+    + 'background:rgba(0,0,0,.88);color:#fff;'
+    + 'font:12px/1.5 ui-monospace,Menlo,Consolas,monospace;'
+    + 'padding:10px;border-radius:6px;pointer-events:none;white-space:pre;');
+
+  function probe(css) {
+    var d = document.createElement('div');
+    d.style.cssText = 'position:absolute;visibility:hidden;height:' + css;
+    document.body.appendChild(d);
+    var v = getComputedStyle(d).height;
+    d.remove();
+    return v;
+  }
+  function draw() {
+    var hr = hero.getBoundingClientRect();
+    var sr = st.getBoundingClientRect();
+    mag.style.top  = (hr.bottom + scrollY - 4) + 'px';
+    lime.style.top = (sr.top + scrollY) + 'px';
+    var meta = document.querySelector('meta[name="theme-color"]');
+    panel.textContent = [
+      'ORANGE top / CYAN bottom = the page box',
+      'MAGENTA = hero bottom, LIME = statement top',
+      '------------------------------',
+      'innerHeight   ' + innerHeight,
+      'screen.height ' + screen.height,
+      'lvh/dvh/svh   ' + probe('100lvh') + ' / ' + probe('100dvh') + ' / ' + probe('100svh'),
+      'hero height   ' + Math.round(hr.height),
+      'hero bottom   ' + Math.round(hr.bottom) + ' (from screen top)',
+      'statement top ' + Math.round(sr.top),
+      'scrollY       ' + Math.round(scrollY),
+      'sat / sab     ' + probe('env(safe-area-inset-top,0px)')
+                       + ' / ' + probe('env(safe-area-inset-bottom,0px)'),
+      'theme-color   ' + (meta ? meta.content : 'none'),
+      'prefers dark  ' + matchMedia('(prefers-color-scheme: dark)').matches,
+      '------------------------------',
+      'Cream BELOW the cyan line = Safari chrome.',
+      'Cream between MAGENTA and CYAN = statement.'
+    ].join(NL);
+  }
+  draw();
+  addEventListener('scroll', draw, { passive: true });
+  addEventListener('resize', draw);
+  if (window.visualViewport) {
+    visualViewport.addEventListener('resize', draw);
+    visualViewport.addEventListener('scroll', draw);
+  }
+})();
+</script>
+
 </body>
 </html>
