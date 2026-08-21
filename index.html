@@ -210,9 +210,13 @@
     position:fixed;top:0;left:0;z-index:200;transform:translateY(-120%);
     background:var(--navy-deep);color:var(--ivory);text-decoration:none;
     font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
-    padding:16px 24px;transition:transform .3s var(--ease);
+    padding:16px 24px;
+    transition:transform .3s var(--ease),background-color .4s var(--ease);
   }
   .skip:focus{transform:translateY(0);}
+  /* the same bordeaux the send button fills with: this is the other control on
+     the page shaped like a button, so it answers the way that one does */
+  .skip:hover{background:var(--bordeaux);}
 
   /* ─────────── focus ─────────── */
   /* a brass hairline rather than a browser ring */
@@ -260,7 +264,17 @@
   header.visible{transform:translateY(0);}
   /* padding at every width, not only under the coarse-pointer query: a touch
      device reporting hover:hover would otherwise get a 37px target here */
-  header .hmark{font-family:'Pinyon Script',cursive;font-size:27px;color:var(--brass);line-height:1;text-decoration:none;display:inline-block;padding:9px 4px;}
+  header .hmark{
+    font-family:'Pinyon Script',cursive;font-size:27px;color:var(--brass);line-height:1;
+    text-decoration:none;display:inline-block;padding:9px 4px;
+    transition:color .55s var(--ease);
+  }
+  /* the lift the hero address, the footer address and the signature all use.
+     Gated the way those are: on a touch screen the state would otherwise stick
+     after a tap, with no pointer to move away and clear it. */
+  @media (hover:hover) and (pointer:fine){
+    header .hmark:hover{color:var(--brass-lit);}
+  }
   header a.henq{
     font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
     color:var(--ivory);text-decoration:none;position:relative;
@@ -610,7 +624,8 @@
   .sent{display:none;margin-top:24px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:var(--bordeaux);max-width:560px;}
   .sent.show{display:block;}
   .sent .alt{display:block;margin-top:16px;font-family:'Jost',sans-serif;font-style:normal;font-size:12px;line-height:1.9;letter-spacing:.04em;color:var(--muted);}
-  .sent .alt a{color:var(--navy);}
+  .sent .alt a{color:var(--navy);transition:color .4s var(--ease);}
+  .sent .alt a:hover{color:var(--bordeaux);}
   .sent .copy{
     display:inline-block;margin-top:10px;font-family:'Jost',sans-serif;font-size:10.5px;
     letter-spacing:.16em;text-transform:uppercase;background:none;color:var(--navy);
@@ -626,7 +641,14 @@
   /* ─────────── footer ─────────── */
   footer{background:var(--navy-deep);color:rgba(243,236,221,.55);text-align:center;position:relative;
     padding:64px calc(24px + var(--sar)) calc(44px + var(--sab)) calc(24px + var(--sal));}
-  footer .fmark{font-family:'Pinyon Script',cursive;font-size:44px;color:var(--brass);line-height:1.28;padding-bottom:.1em;margin-bottom:4px;text-decoration:none;display:inline-block;}
+  footer .fmark{
+    font-family:'Pinyon Script',cursive;font-size:44px;color:var(--brass);line-height:1.28;
+    padding-bottom:.1em;margin-bottom:4px;text-decoration:none;display:inline-block;
+    transition:color .55s var(--ease);
+  }
+  @media (hover:hover) and (pointer:fine){
+    footer .fmark:hover{color:var(--brass-lit);}
+  }
   footer .ftag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:rgba(243,236,221,.62);}
   /* the address in the hero's face, so the page opens and closes on the same
      line. Padding, not margin: it carries the 44px tap target a thumb needs
