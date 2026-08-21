@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Mare Leborgne">
+  <title>Mare Leborgne</title>
+  <g fill="none" stroke="#B8935A" stroke-linecap="round">
+    <path d="M4 12.5c4-4.5 8-4.5 12 0s8 4.5 12 0" stroke-width="2.6"/>
+    <path d="M4 21c4-4.5 8-4.5 12 0s8 4.5 12 0" stroke-width="1.8" stroke-opacity="0.75"/>
+  </g>
+</svg>

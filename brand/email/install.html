@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email signature · Mare Leborgne</title>
+<meta name="robots" content="noindex, nofollow">
+<!-- The copy button is an inline script, so 'unsafe-inline' is required here;
+     everything else stays shut, and the wordmark is served from this origin. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; form-action 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#F3ECDD;color:#211E1A;font:15px/1.7 Georgia,'Times New Roman',serif;padding:44px 24px 90px}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-weight:400;font-size:30px;letter-spacing:.005em;margin-bottom:6px}
+  .sub{color:#6b6255;font-style:italic;margin-bottom:34px}
+  h2{font:400 11px/1 Helvetica,Arial,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#7E5E33;margin:38px 0 14px}
+  ol{margin:0 0 0 20px}
+  li{margin-bottom:9px}
+  code{background:#EAE1CE;padding:2px 6px;font-size:13px;font-family:ui-monospace,Menlo,Consolas,monospace}
+  .card{background:#fff;border:1px solid rgba(20,33,61,.14);padding:28px 30px;margin-bottom:12px}
+  .lab{font:400 10px/1 Helvetica,Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#6b6255;margin-bottom:12px}
+  button{font:400 11px/1 Helvetica,Arial,sans-serif;letter-spacing:.18em;text-transform:uppercase;
+    background:#14213D;color:#F3ECDD;border:0;padding:16px 26px;cursor:pointer;transition:background .4s}
+  button:hover{background:#6E1F2E}
+  button:focus-visible{outline:2px solid #7E5E33;outline-offset:3px}
+  .note{background:#EAE1CE;border-left:2px solid #B8935A;padding:14px 18px;font-size:14px;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>The email signature</h1>
+  <p class="sub">Gmail strips stylesheets and will not load a webfont, so the script is an image and every other rule is written inline. Nothing here needs editing.</p>
+
+  <h2>Preview</h2>
+  <pre id="sigtext" hidden>Augusto Leborgne
+Founder · Mare Leborgne
+
+hello@mareleborgne.com
+mareleborgne.com
+Sydney, Australia</pre>
+
+  <div class="card"><div class="lab">On white &mdash; what Gmail shows by default</div><div id="sig"><table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Georgia,'Times New Roman',serif;color:#211E1A"><tbody>
+<tr><td style="padding:0 0 10px">
+<a href="https://mareleborgne.com/" style="text-decoration:none;border:0"><img src="https://mareleborgne.com/brand/email/wordmark-signature.png" alt="Mare Leborgne" width="176" height="36" style="display:block;width:176px;height:36px;border:0;outline:none;text-decoration:none"></a>
+</td></tr>
+<tr><td style="padding:0 0 2px;font-family:Georgia,'Times New Roman',serif;font-size:15px;line-height:1.4;color:#14213D">Augusto Leborgne</td></tr>
+<tr><td style="padding:0 0 10px;font-family:Helvetica,Arial,sans-serif;font-size:10px;line-height:1.6;letter-spacing:1.6px;text-transform:uppercase;color:#6b6255">Founder &nbsp;&middot;&nbsp; Mare Leborgne</td></tr>
+<tr><td style="padding:0 0 10px"><table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse"><tbody><tr><td style="width:176px;height:1px;background-color:#B8935A;font-size:0;line-height:0">&nbsp;</td></tr></tbody></table></td></tr>
+<tr><td style="padding:0 0 1px;font-family:Georgia,'Times New Roman',serif;font-size:13px;line-height:1.65"><a href="mailto:hello@mareleborgne.com" style="color:#7E5E33;text-decoration:none">hello@mareleborgne.com</a></td></tr>
+<tr><td style="padding:0 0 1px;font-family:Georgia,'Times New Roman',serif;font-size:13px;line-height:1.65"><a href="https://mareleborgne.com/" style="color:#7E5E33;text-decoration:none">mareleborgne.com</a></td></tr>
+<tr><td style="padding:4px 0 0;font-family:Helvetica,Arial,sans-serif;font-size:10px;line-height:1.6;letter-spacing:1.4px;text-transform:uppercase;color:#6b6255">Sydney, Australia</td></tr>
+</tbody></table></div></div>
+
+  <div class="note"><strong>On Gmail's dark theme.</strong> Gmail runs its own colour transform over message content and lifts dark text rather than letting it disappear, so this does not need a second version. The wordmark is set in the darker brass because white is the default and what almost every recipient sees &mdash; the lighter brass measures 2.85:1 on white and the thin script strokes wash out. If a dark ground is ever the target, <code>wordmark-signature-dark.png</code> in this folder is the same mark in the lighter brass.</div>
+
+  <h2>Put it into Gmail</h2>
+  <ol>
+    <li>Press <strong>Copy signature</strong> below.</li>
+    <li>In Gmail, open <code>Settings → See all settings → General</code> and scroll to <strong>Signature</strong>.</li>
+    <li>Create a signature, click into the editing box, and paste with <code>Ctrl+V</code> (<code>⌘V</code> on a Mac).</li>
+    <li>Set it as the default for <em>New emails</em> and for <em>On reply/forward</em>, then <strong>Save changes</strong> at the bottom.</li>
+  </ol>
+  <p style="margin-top:18px"><button id="copy" type="button">Copy signature</button></p>
+  <div class="note">If the button does not work in your browser, select the signature in the white box above with the mouse, from just above the wordmark to the end of the last line, and copy it normally. Pasting a selection carries the formatting.</div>
+
+  <h2>Worth knowing</h2>
+  <ol>
+    <li>The wordmark is served from <code>mareleborgne.com</code>. It has to stay there, or the image breaks in every signature already sent.</li>
+    <li>Many people read mail with images blocked. That is why the name and the studio appear as real text under the wordmark rather than inside it.</li>
+    <li>For the plain-text signature some clients ask for, use <code>signature.txt</code> in this folder.</li>
+  </ol>
+</div>
+<script>
+  document.getElementById('copy').addEventListener('click', async function () {
+    var btn = this, html = document.getElementById('sig').innerHTML;
+    var text = document.getElementById('sigtext').textContent.trim();
+    try {
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/html': new Blob([html], { type: 'text/html' }),
+        'text/plain': new Blob([text], { type: 'text/plain' })
+      })]);
+      btn.textContent = 'Copied — now paste into Gmail';
+    } catch (e) {
+      // older browsers: fall back to selecting it, so the manual route still works
+      var r = document.createRange(); r.selectNodeContents(document.getElementById('sig'));
+      var s = getSelection(); s.removeAllRanges(); s.addRange(r);
+      try { document.execCommand('copy'); btn.textContent = 'Copied — now paste into Gmail'; }
+      catch (e2) { btn.textContent = 'Select it above and copy'; }
+    }
+    setTimeout(function () { btn.textContent = 'Copy signature'; }, 4000);
+  });
+</script>
+</body>
+</html>

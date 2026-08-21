@@ -1,0 +1,163 @@
+# Mare Leborgne — brand assets
+
+Everything the studio needs to put its name on something, plus the sources to
+regenerate all of it. Nothing in here is used by the website itself except the
+favicons and the email signature's wordmark; the site draws its own marks from
+the stylesheet.
+
+The whole set is served from the site, so any of these can be linked to
+directly — `https://mareleborgne.com/brand/logo/wordmark-brass.svg` and so on.
+That matters for the email signature, whose image has to live at a public URL.
+
+---
+
+## The marks
+
+**The wordmark** is "Mare Leborgne" set in Pinyon Script. In every SVG here the
+letters are **converted to outlines**, not set as live text. This is the whole
+reason the files are portable: an SVG that named the font would fall back to
+whatever cursive the opening machine happens to have, which on Windows is
+usually Comic Sans.
+
+**The mark** is the two contour lines from the hero's sea. It stands in for the
+wordmark where there is no room for a name — favicons, app icons, avatars.
+
+**The lockups** set the two together at fixed proportions, so nobody has to
+re-invent the spacing. Stacked is the primary; horizontal is for wide, short
+spaces.
+
+---
+
+## Which file
+
+| You need | Use |
+|---|---|
+| Anything at any size, on screen or in print | the `.svg` |
+| Somewhere that will not take SVG (Word, Gmail, some social) | the `.png` |
+| On navy, or any dark ground | `-brass` or `-ivory` |
+| On ivory, white, or paper | `-navy` |
+| A single flat colour, e.g. a stamp or an engraver | `-navy` or `-ivory` |
+| The site's own look, with the sheen across it | `wordmark-gradient` |
+
+PNGs are transparent, so they drop onto any ground. The number in the filename
+is the pixel width. Ask for roughly twice the size it will be displayed at.
+
+```
+logo/     wordmark, on its own
+mark/     the two contour lines, on their own and on a tile
+lockup/   mark and wordmark set together
+social/   avatars, LinkedIn cover, square share card
+email/    the Gmail signature
+_src/     the font, the licence, and the generator
+```
+
+---
+
+## The email signature
+
+Open **`email/install.html`** — in a browser, or at
+`https://mareleborgne.com/brand/email/install.html` — and follow it. There is a
+copy button and four steps.
+
+Three things about it are deliberate, and all three are Gmail's doing:
+
+- **The script is an image.** Gmail does not load webfonts, so a signature that
+  asked for Pinyon Script would arrive in whatever the reader's machine calls
+  cursive. This is what was wrong with the old one.
+- **Every style is written inline.** Gmail strips `<style>` blocks entirely.
+- **The name and the studio appear as real text** under the wordmark, not only
+  inside it. A great many people read mail with images turned off, and those
+  readers still get a signature rather than a blank space and an alt tag.
+
+The wordmark is set in the darker brass (`#7E5E33`), because white is what
+Gmail shows by default: the lighter brass measures 2.85:1 on white and the
+thin script strokes wash out. `wordmark-signature-dark.png` is the same mark in
+the lighter brass, if a dark ground is ever the target instead.
+
+`email/signature.txt` is the plain-text version some clients ask for.
+
+**The image must stay at `mareleborgne.com`.** Every signature already sent
+points at that URL; moving or deleting it breaks the mark in all of them,
+retroactively.
+
+---
+
+## Favicons
+
+The mark, at the sizes browsers and operating systems ask for. These live at
+the repository root, not in this folder, because that is where they are looked
+for.
+
+```
+favicon.svg              modern browsers
+favicon.ico              16 / 32 / 48, for older browsers and Windows
+apple-touch-icon.png     180, iOS home screen
+icon-192.png             the smallest Android will accept
+icon-512.png             splash screens, app switchers
+icon-maskable-512.png    512, pulled inside Android's circular safe zone
+```
+
+The second contour line is drawn at **75% opacity here, not the 55% the site
+used**. Below about 20 pixels the fainter line disappeared into the background
+and the mark read as one wave with a smudge under it. At 16px it is stronger
+again, at 85%, because antialiasing eats a hairline stroke almost entirely at
+that size. Nothing else about the mark changed — same paths, same weights.
+
+---
+
+## Colours
+
+| | Hex | Where |
+|---|---|---|
+| Navy deep | `#0B1424` | the ground everything dark sits on |
+| Navy | `#14213D` | headings on ivory, the send button |
+| Ivory | `#F3ECDD` | the light ground |
+| Ivory 2 | `#EAE1CE` | the second light ground, for alternating bands |
+| Brass | `#B8935A` | the mark, rules, anything decorative on navy |
+| Brass ink | `#7E5E33` | brass where it has to be **read** on a light ground |
+| Brass lit | `#F0DCA8` | the bright middle of the sheen, and hover |
+| Bordeaux | `#6E1F2E` | emphasis, and the one accent |
+| Ink | `#211E1A` | body text |
+
+Brass and brass-ink are not interchangeable. Brass is 2.4:1 on ivory — fine for
+a rule or a fill, not for words. Brass-ink clears 4.5:1 on both ivory grounds
+and is the one to use whenever brass has to carry text.
+
+---
+
+## Type
+
+| | | |
+|---|---|---|
+| **Pinyon Script** | the wordmark and the signature | OFL, in `_src/` |
+| **Cormorant Garamond** | headings, the tagline, italic ledes | OFL |
+| **EB Garamond** | body text | OFL |
+| **Jost** | small caps, labels, buttons | OFL |
+
+All four are open licence and free to install. In email, where none of them
+load, the fallback is Georgia.
+
+---
+
+## Rebuilding
+
+```
+cd brand/_src
+npm install opentype.js puppeteer-core
+node rebuild-brand.js
+```
+
+Regenerates every SVG from the font outlines, every PNG from those SVGs, the
+`.ico`, the app icons, the social images and the signature wordmark. Chrome
+must be installed; set `CHROME_PATH` if it is somewhere unusual.
+
+Because the PNGs are rendered from the SVGs and the SVGs are generated from the
+font, the set cannot drift out of step with itself.
+
+---
+
+## Licence
+
+The marks and the artwork are Mare Leborgne's. The four typefaces are under the
+SIL Open Font License 1.1 — `_src/PinyonScript-OFL.txt` carries the full text,
+and it covers redistributing the font file alongside these assets.
