@@ -55,17 +55,6 @@
     unicode-range:U+20,U+41,U+4c-4d,U+61-62,U+65,U+67,U+6e-6f,U+72-75;
   }
 
-  /* Parisienne, subset to the letters in "Augusto Leborgne" alone (3,044 bytes
-     — the name has no lowercase a, so the range is smaller again). The
-     signature is the one place on the page where the script has to be read
-     rather than recognised, and copperplate is the wrong tool for that: it is
-     set here in something more open while the wordmark stays engraved. */
-  @font-face{
-    font-family:'Parisienne';
-    font-style:normal;font-weight:400;font-display:block;
-    src:url(data:font/woff2;base64,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) format('woff2');
-    unicode-range:U+20,U+41,U+4c,U+62,U+65,U+67,U+6e-6f,U+72-75;
-  }
 
   :root{
     --navy:#14213D;
@@ -320,8 +309,11 @@
   /* ─────────── signature ─────────── */
   .sig{margin-top:50px;}
   .sig .nm{
-    font-family:'Parisienne','Snell Roundhand','Apple Chancery','Segoe Script',cursive;
-    font-size:clamp(34px,4.4vw,46px);color:var(--brass);line-height:1.3;padding-bottom:.08em;
+    font-family:'Pinyon Script','Snell Roundhand','Apple Chancery','Segoe Script',cursive;
+    /* set larger than the 46px it was: the mark and the signature share a face
+       now, and copperplate needs the extra size to stay readable at a name
+       someone is reading for the first time */
+    font-size:clamp(38px,5vw,54px);color:var(--brass);line-height:1.3;padding-bottom:.08em;
   }
   .sig .rl{
     font-family:'Jost',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;
