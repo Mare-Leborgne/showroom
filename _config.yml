@@ -7,12 +7,32 @@
 # Jekyll is doing the excluding, which is why there is no .nojekyll file. It
 # copies any file without YAML front matter through untouched, and nothing here
 # has front matter, so no page is processed or altered on the way out.
+#
+# Listed folder by folder rather than as `brand/` with an `include:` exception,
+# because `include:` does NOT override a directory-level `exclude:` — that was
+# tried, and it took the email signature's wordmark offline with it. The cost
+# of naming them individually is that a NEW folder under brand/ would be
+# published until it is added here. Add it here.
 
 exclude:
   # The brand kit. Not secret, but not the studio's shop window either: the
   # logo files, the sources, the typeface and the generators are for whoever
   # is making something, not for a stranger who guessed a URL.
-  - brand/
+  - brand/_src/
+  - brand/logo/
+  - brand/mark/
+  - brand/lockup/
+  - brand/social/
+  - brand/index.html
+  - brand/README.md
+  - brand/email/install.html
+  - brand/email/signature.html
+  - brand/email/signature.txt
+
+  # brand/email/wordmark-signature.png and -dark.png are deliberately NOT
+  # excluded. That image is fetched from mareleborgne.com by the mail client of
+  # every person who has ever received an email from the studio; if it stops
+  # resolving, the wordmark breaks in all of them at once, retroactively.
 
   # Build sources for the icons and the share card. They exist to be
   # screenshotted, and they render a broken half-page in a browser.
@@ -26,11 +46,3 @@ exclude:
   - package-lock.json
   - Gemfile
   - Gemfile.lock
-
-include:
-  # The one exception, and it is load-bearing: this image is fetched from
-  # mareleborgne.com by the mail client of every person who has ever received
-  # an email from the studio. If it stops resolving, the wordmark breaks in all
-  # of them at once, retroactively. It stays public.
-  - brand/email/wordmark-signature.png
-  - brand/email/wordmark-signature-dark.png
