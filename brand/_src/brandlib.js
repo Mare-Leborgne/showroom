@@ -121,3 +121,80 @@ ${markPaths(stroke)}
 
 module.exports.lockupStacked = lockupStacked;
 module.exports.lockupHorizontal = lockupHorizontal;
+
+/* ── the wave lockup ──────────────────────────────────────────────────
+   The signature sitting on water. This is the primary logo.
+
+   Why this and not the mark set beside the name: the studio is called mare.
+   The hero already floats the wordmark on a moving sea, and a signature
+   conventionally sits on a ruled line — so one wave does both jobs at once,
+   waterline and signature rule, and the two elements stop reading as two
+   objects stacked together.
+
+   Settled by drawing the alternatives rather than by argument:
+     · Three periods ripples, and turns to mush below about 150px.
+     · One period is a long lazy swell that needs too much vertical room.
+     · Running the water through the descenders looked well at full size and
+       read as a strikethrough small, so the waterline clears them.
+   Two periods, two lines, clear of the descenders. Two lines because that is
+   already the mark — the logo and the icon stay one language.               */
+function waveLine(x0, y0, width, periods, amp) {
+  const half = width / (periods * 2);
+  let d = `M${r(x0)} ${r(y0)}`;
+  for (let i = 0; i < periods * 2; i++) {
+    const up = i % 2 === 0 ? -1 : 1;
+    d += ` c ${r(half / 3)} ${r(amp * up)}, ${r(half / 3 * 2)} ${r(amp * up)}, ${r(half)} 0`;
+  }
+  return d;
+}
+
+function lockupWave({ fill = C.brass, stroke = C.brass, bg = null,
+                      periods = 2, drop = 0.22, over = 0.06, sw = 26 } = {}) {
+  const { d, bb } = wordmarkPath();
+  const W = bb.x2 - bb.x1, H = bb.y2 - bb.y1;
+  const waveW = W * (1 + over * 2);
+  const x0 = bb.x1 - W * over;
+  const amp = (waveW / (periods * 2)) * 0.22;
+  const yBase = bb.y2 + H * drop;
+  const gapLine = H * 0.16;
+
+  const lines = [0, 1].map(i => {
+    const y = yBase + i * gapLine;
+    /* .62, between the mark's .75 and the hero sea's .55: this wave is long and
+       thin, so it holds at a lower value than the icon does, but .55 started to
+       disappear once the logo was set small. */
+    return `<path d="${waveLine(x0, y, waveW, periods, amp * (i === 0 ? 1 : 0.82))}" stroke-width="${r(sw * (i === 0 ? 1 : 0.72))}" stroke-opacity="${i === 0 ? 1 : 0.62}"/>`;
+  });
+
+  const pad = bg ? H * 0.55 : W * 0.035;      // clear space, generous on a panel
+  const top = bb.y1 - pad;
+  const bottom = yBase + gapLine + amp + sw + pad;
+  const vx = x0 - pad, vw = waveW + pad * 2;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${r(vx)} ${r(top)} ${r(vw)} ${r(bottom - top)}" role="img" aria-label="Mare Leborgne">
+  <title>Mare Leborgne</title>
+${bg ? `  <rect x="${r(vx)}" y="${r(top)}" width="${r(vw)}" height="${r(bottom - top)}" fill="${bg}"/>\n` : ''}  <g fill="none" stroke="${stroke}" stroke-linecap="round">
+    ${lines.join('\n    ')}
+  </g>
+  <path fill="${fill}" d="${d}"/>
+</svg>
+`;
+}
+
+/* the wordmark on a ground of its own, for the times a transparent PNG will be
+   dropped onto the wrong colour by somebody who is not thinking about it */
+function wordmarkPanel({ fill = C.brass, bg = C.navyDeep } = {}) {
+  const { d, bb } = wordmarkPath();
+  const H = bb.y2 - bb.y1, pad = H * 0.55;
+  const x = bb.x1 - pad, y = bb.y1 - pad;
+  const w = (bb.x2 - bb.x1) + pad * 2, h = H + pad * 2;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${r(x)} ${r(y)} ${r(w)} ${r(h)}" role="img" aria-label="Mare Leborgne">
+  <title>Mare Leborgne</title>
+  <rect x="${r(x)}" y="${r(y)}" width="${r(w)}" height="${r(h)}" fill="${bg}"/>
+  <path fill="${fill}" d="${d}"/>
+</svg>
+`;
+}
+
+module.exports.lockupWave = lockupWave;
+module.exports.wordmarkPanel = wordmarkPanel;
+module.exports.waveLine = waveLine;

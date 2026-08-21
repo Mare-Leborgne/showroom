@@ -11,6 +11,29 @@ That matters for the email signature, whose image has to live at a public URL.
 
 ---
 
+## The logo
+
+**`lockup/lockup-wave-brass-on-navy`** is the primary logo: the signature
+sitting on water.
+
+It is the wave version and not the mark-beside-the-name because the studio is
+called *mare*. The hero already floats the wordmark on a moving sea, and a
+signature conventionally sits on a ruled line — so one wave does both jobs at
+once, waterline and signature rule, and the name and the water stop reading as
+two objects that happen to be stacked. Two lines rather than one, because two
+lines are already the mark: the logo and the icon stay one language.
+
+The shape was settled by drawing the alternatives, not by argument. Three wave
+periods ripples and turns to mush below about 150px. One period is a long lazy
+swell that needs too much vertical room. Running the water *through* the
+descenders looked well at full size and read as a strikethrough small, so the
+waterline clears them. Two periods, two lines, clear of the descenders.
+
+Use it on navy wherever there is a choice — that is the site's own pairing and
+the studio's own colour. `lockup-wave-brass` is the same thing transparent, for
+dropping onto navy you already have. `lockup-wave-navy-on-ivory` is the light
+version, for paper.
+
 ## The marks
 
 **The wordmark** is "Mare Leborgne" set in Pinyon Script. In every SVG here the
@@ -22,9 +45,9 @@ usually Comic Sans.
 **The mark** is the two contour lines from the hero's sea. It stands in for the
 wordmark where there is no room for a name — favicons, app icons, avatars.
 
-**The lockups** set the two together at fixed proportions, so nobody has to
-re-invent the spacing. Stacked is the primary; horizontal is for wide, short
-spaces.
+**The other lockups** set the mark beside the name rather than under the water
+— stacked, and horizontal for wide, short spaces. Use them where the wave
+version will not fit.
 
 ---
 
@@ -36,6 +59,7 @@ spaces.
 | Somewhere that will not take SVG (Word, Gmail, some social) | the `.png` |
 | On navy, or any dark ground | `-brass` or `-ivory` |
 | On ivory, white, or paper | `-navy` |
+| Anywhere the background is out of your hands | `-on-navy` or `-on-ivory`, which bring their own |
 | A single flat colour, e.g. a stamp or an engraver | `-navy` or `-ivory` |
 | The site's own look, with the sheen across it | `wordmark-gradient` |
 
@@ -43,9 +67,9 @@ PNGs are transparent, so they drop onto any ground. The number in the filename
 is the pixel width. Ask for roughly twice the size it will be displayed at.
 
 ```
-logo/     wordmark, on its own
+lockup/   lockup-wave-* is the logo; the rest set the mark beside the name
+logo/     wordmark on its own, transparent or on its own ground
 mark/     the two contour lines, on their own and on a tile
-lockup/   mark and wordmark set together
 social/   avatars, LinkedIn cover, square share card
 email/    the Gmail signature
 _src/     the font, the licence, and the generator

@@ -6,13 +6,20 @@ const kb = f => (fs.statSync(path.join(R, f)).size / 1024).toFixed(0) + ' KB';
 
 const DARK = '#0B1424', LIGHT = '#F3ECDD';
 const groups = [
-  ['The wordmark', 'Letters converted to outlines, so it renders the same on a machine that has never heard of Pinyon Script.', [
+  ['The logo', 'The signature sitting on water. The studio is called <em>mare</em>, the hero already floats the name on a moving sea, and a signature conventionally sits on a ruled line — so one wave is waterline and signature rule at once. Two lines, because that is already the mark.', [
+    ['lockup/lockup-wave-brass-on-navy.svg', '#8d8d8d'], ['lockup/lockup-wave-brass.svg', DARK],
+    ['lockup/lockup-wave-ivory.svg', DARK], ['lockup/lockup-wave-navy-on-ivory.svg', '#8d8d8d'],
+    ['lockup/lockup-wave-navy.svg', LIGHT]]],
+  ['On a ground of its own', 'For the times a transparent PNG would be dropped onto the wrong colour by somebody not thinking about it. Brass on navy is the site’s own pairing.', [
+    ['logo/wordmark-brass-on-navy.svg', '#8d8d8d'], ['logo/wordmark-ivory-on-navy.svg', '#8d8d8d'],
+    ['logo/wordmark-navy-on-ivory.svg', '#8d8d8d']]],
+  ['The wordmark', 'On its own, transparent. Letters converted to outlines, so it renders the same on a machine that has never heard of Pinyon Script.', [
     ['logo/wordmark-brass.svg', DARK], ['logo/wordmark-ivory.svg', DARK],
     ['logo/wordmark-navy.svg', LIGHT], ['logo/wordmark-gradient.svg', DARK]]],
   ['The mark', 'The hero\u2019s two contour lines. Stands in for the name where there is no room for it.', [
     ['mark/mark-brass.svg', DARK], ['mark/mark-ivory.svg', DARK],
     ['mark/mark-navy.svg', LIGHT], ['mark/mark-tile-navy.svg', LIGHT], ['mark/mark-tile-ivory.svg', DARK]]],
-  ['Lockups', 'The two set together at fixed proportions. Stacked is the primary.', [
+  ['Other lockups', 'The mark set beside the name rather than under it, at fixed proportions so the spacing is not re-invented each time.', [
     ['lockup/lockup-stacked-brass.svg', DARK], ['lockup/lockup-stacked-ivory.svg', DARK],
     ['lockup/lockup-stacked-navy.svg', LIGHT],
     ['lockup/lockup-horizontal-brass.svg', DARK], ['lockup/lockup-horizontal-ivory.svg', DARK],
@@ -26,7 +33,9 @@ const RASTER = ['social/avatar-1024.png','social/avatar-ivory-1024.png',
   'social/linkedin-banner-1584x396.png','social/share-square-1200.png'];
 
 function tile(file, bg) {
-  const svg = fs.readFileSync(path.join(R, file), 'utf8').replace('<svg ', '<svg style="width:100%;height:auto;display:block" ');
+  // referenced, not inlined: each of these carries ~21KB of outlined path data,
+  // and inlining twenty of them made a 389KB page out of a contact sheet
+  const svg = `<img src="${file}" alt="" style="width:100%;height:auto;display:block">`;
   const isMark = /mark\//.test(file);
   return `<figure style="margin:0">
     <div style="background:${bg};border:1px solid rgba(20,33,61,.12);padding:${isMark ? '26px 34%' : '26px 22px'};display:flex;align-items:center;justify-content:center;min-height:132px">${svg}</div>

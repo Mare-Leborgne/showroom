@@ -25,6 +25,7 @@ const STEPS = [
   ['genico.js',    'favicon.ico and the app icons'],
   ['gensocial.js', 'avatars, LinkedIn cover, share cards, og.png'],
   ['gensig.js',    'the email signature and its wordmark'],
+  ['gensheet.js',  'the contact sheet at brand/index.html'],
 ];
 
 for (const [file, what] of STEPS) {
