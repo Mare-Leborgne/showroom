@@ -7,8 +7,20 @@
 <meta name="description" content="Boutique web design for unique Sydney businesses. Sites made to measure, never from a template.">
 <link rel="canonical" href="https://mareleborgne.com/">
 <meta name="robots" content="index,follow,max-image-preview:large">
+<!-- Safari keeps roughly 105px of an 844px iPhone screen for itself: a
+     status-bar band above the page and a toolbar band below it. No CSS reaches
+     either, and env(safe-area-inset-*) reads 0 in a tab, so theme-color is the
+     only lever on them. Script near the foot keeps it matched to whichever
+     section is against the top edge; this is the hero's value, which is what
+     paints before that first runs.
+
+     There is deliberately no color-scheme meta. Declaring `light` made Safari
+     resolve theme-color against a light scheme and fall back to a pale chrome
+     instead of honouring the navy, which put a cream band under the hero that
+     no viewport unit could reach. Every colour here is set explicitly and the
+     form controls carry their own background, so nothing needs the UA's
+     default scheme. -->
 <meta name="theme-color" content="#0B1424">
-<meta name="color-scheme" content="light">
 <meta name="author" content="Augusto Leborgne">
 
 <!-- share card -->
@@ -215,17 +227,17 @@
     display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
     background:radial-gradient(125% 95% at 50% 12%, #1c2b46 0%, var(--navy) 44%, var(--navy-deep) 100%);
     color:var(--ivory);overflow:hidden;
-    padding:calc(112px + var(--sat)) calc(24px + var(--sar)) calc(140px + var(--sab)) calc(24px + var(--sal));
+    padding:calc(112px + var(--sat)) calc(24px + var(--sar)) calc(140px + var(--sab) + (100lvh - 100dvh)) calc(24px + var(--sal));
   }
   /* a short screen — any phone in landscape — cannot afford 250px of padding */
   @media (max-height:620px){
-    .hero{padding-top:calc(74px + var(--sat));padding-bottom:calc(80px + var(--sab));}
+    .hero{padding-top:calc(74px + var(--sat));padding-bottom:calc(80px + var(--sab) + (100lvh - 100dvh));}
   }
   /* a phone turned sideways is barely 375px tall. Padding alone will not buy
      that back, so the mark comes down too: otherwise the hero grows past the
      screen and the address has to be scrolled to. */
   @media (max-height:480px){
-    .hero{padding-top:calc(30px + var(--sat));padding-bottom:calc(32px + var(--sab));}
+    .hero{padding-top:calc(30px + var(--sat));padding-bottom:calc(32px + var(--sab) + (100lvh - 100dvh));}
     .hero .eyebrow{margin-bottom:12px;}
     /* bounded by height as well as width: sized on vw alone, a wider landscape
        phone gets a bigger mark than a narrow one and overflows the shorter
@@ -598,7 +610,7 @@
 <main id="main" tabindex="-1">
 
 <!-- ───────────── hero ───────────── -->
-<div class="hero" id="top">
+<div class="hero" id="top" data-band="#0B1424">
   <canvas id="sea" aria-hidden="true"></canvas>
   <div class="scrim"></div>
   <div class="inner">
@@ -621,7 +633,7 @@
 </div>
 
 <!-- ───────────── statement ───────────── -->
-<section class="statement" data-nav="What we do">
+<section class="statement" data-nav="What we do" data-band="#F3ECDD">
   <div class="wrap narrow">
     <span class="label r">What we do</span>
     <h2 class="display r split">Crafting a web presence for businesses whose <em>character deserves showing</em>.</h2>
@@ -633,7 +645,7 @@
 </section>
 
 <!-- ───────────── approach ───────────── -->
-<section class="approach" id="approach" data-nav="Approach">
+<section class="approach" id="approach" data-nav="Approach" data-band="#EAE1CE">
   <div class="wrap">
     <span class="label r">The approach</span>
     <h2 class="display r split" style="margin-top:26px;max-width:840px;">Focus on what you know best. <em>We&rsquo;ll do the rest.</em></h2>
@@ -647,7 +659,7 @@
 </section>
 
 <!-- ───────────── selectivity ───────────── -->
-<section class="select" id="mission" data-nav="Our Mission">
+<section class="select" id="mission" data-nav="Our Mission" data-band="#0B1424">
   <div class="wrap narrow" style="position:relative;z-index:2;">
     <span class="label r">Our Mission</span>
     <h2 class="display r split">A unique web presence with style, in a <em>world full of repetition</em>.</h2>
@@ -664,7 +676,7 @@
 </section>
 
 <!-- ───────────── application ───────────── -->
-<section class="apply" id="apply" data-nav="Enquire" tabindex="-1">
+<section class="apply" id="apply" data-nav="Enquire" tabindex="-1" data-band="#EAE1CE">
   <div class="wrap">
     <span class="label r">Enquire</span>
     <h2 class="display r split" style="margin-top:26px;max-width:720px;">Tell us about what you have built.</h2>
@@ -725,7 +737,7 @@
 
 </main>
 
-<footer>
+<footer data-band="#0B1424">
   <a href="/" class="fmark" aria-label="Mare Leborgne, home">Mare Leborgne</a>
   <div class="ftag">Sites, sur mesure.</div>
   <a class="fmail" href="mailto:hello@mareleborgne.com">hello@mareleborgne.com</a>
@@ -911,7 +923,36 @@
   setTimeout(function () {
     if (cue && scrollY <= 40) cue.classList.add('in');
   }, 3600);
+  /* ── the two bands Safari paints itself ──
+     The page is handed 739 of the screen's 844 pixels; the strip above it and
+     the strip below it are Safari's, and theme-color is the only way to colour
+     them. It colours both at once, so it follows whatever section is against
+     the top edge. At rest that is the hero, which puts the lower strip on navy
+     and lets the hero read as running to the bottom of the screen; once the
+     ivory is under the notch the strip goes cream with it rather than leaving
+     a navy bar stranded there. */
+  var themeMeta = document.querySelector('meta[name="theme-color"]');
+  var bands = Array.prototype.slice.call(document.querySelectorAll('[data-band]'));
+  function band() {
+    if (!themeMeta) return;
+    /* At the foot of the document the footer fills the lower half of the
+       screen but never reaches the top edge, being shorter than a viewport.
+       One meta paints both strips, so there take the colour from the bottom
+       edge: that is the one with a section behind it. */
+    var edge = (scrollY + innerHeight >= root.scrollHeight - 2) ? innerHeight - 1 : 1;
+    var at = null;
+    bands.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top <= edge && r.bottom > edge) at = el;
+    });
+    /* nothing spans the edge only while the page is rubber-banding past an
+       end, and the last colour is the right one to hold through that */
+    var c = at && at.getAttribute('data-band');
+    if (c && themeMeta.content !== c) themeMeta.content = c;
+  }
+
   function onScroll() {
+    band();
     var past = scrollY > innerHeight * 0.85;
     /* On touch the header carries the only way to reach you, so it is present
        from the first screen rather than after a scroll — transparent over the
