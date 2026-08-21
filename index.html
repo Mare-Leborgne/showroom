@@ -154,7 +154,7 @@
     transform:translateY(-101%);transition:transform 1s var(--ease);
   }
   header.visible{transform:translateY(0);}
-  header .hmark{font-family:'Beau Rivage',cursive;font-size:27px;color:var(--brass);line-height:1;}
+  header .hmark{font-family:'Beau Rivage',cursive;font-size:27px;color:var(--brass);line-height:1;text-decoration:none;display:inline-block;padding:5px 2px;}
   header a.henq{
     font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
     color:var(--ivory);text-decoration:none;position:relative;
@@ -217,10 +217,12 @@
     color:var(--ivory);padding:120px 24px 150px;overflow:hidden;
   }
   #sea{position:absolute;inset:0;width:100%;height:100%;z-index:1;}
-  /* keeps the mark crisp wherever the lines happen to drift */
+  /* Just enough to keep the mark off the contour lines. Wider and far weaker
+     than it was: at .78 over 44% the falloff read as a disc sitting behind the
+     wordmark rather than as depth in the water. */
   .hero .scrim{
     position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:radial-gradient(44% 38% at 50% 44%, rgba(11,20,36,.78) 0%, rgba(11,20,36,.45) 45%, rgba(11,20,36,0) 72%);
+    background:radial-gradient(62% 54% at 50% 44%, rgba(11,20,36,.38) 0%, rgba(11,20,36,.19) 50%, rgba(11,20,36,0) 80%);
   }
   .hero .inner{position:relative;z-index:2;}
   .hero .eyebrow{
@@ -312,23 +314,18 @@
 
   /* ─────────── approach ─────────── */
   .approach{background:var(--ivory-2);}
-  .movements{margin-top:60px;}
-  .mv{
-    display:grid;grid-template-columns:76px 1fr;gap:clamp(20px,4vw,52px);
-    padding:40px 0;position:relative;cursor:default;
+  /* The prose steps to the right of the heading rather than sitting under it.
+     Every other section is a centred column; this is the only asymmetry on the
+     page, and it is what stops the four sections reading as one shape. */
+  .approach .prose{margin-top:48px;margin-left:auto;max-width:664px;}
+  @media (max-width:900px){.approach .prose{margin-left:0;margin-top:32px;}}
+  /* the opening paragraph in the tagline's italic, so the section starts in a
+     voice rather than in a block of text */
+  p.lede{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+    font-size:clamp(20px,2.1vw,25px);line-height:1.52;color:var(--navy);
+    max-width:664px;margin-bottom:28px;
   }
-  .mv::before{content:'';position:absolute;top:0;left:0;width:100%;height:1px;background:rgba(20,33,61,.14);}
-  .mv::after{
-    content:'';position:absolute;top:0;left:0;width:100%;height:1px;background:var(--brass);
-    transform:scaleX(0);transform-origin:left;transition:transform 1.1s var(--ease);
-  }
-  .mv:hover::after{transform:scaleX(1);}
-  .mv:last-child{border-bottom:1px solid rgba(20,33,61,.14);}
-  .mv .n{font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.2em;color:var(--brass-ink);padding-top:9px;transition:transform .8s var(--ease);}
-  .mv:hover .n{transform:translateX(6px);}
-  .mv h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(24px,3vw,33px);color:var(--navy);margin-bottom:12px;transition:transform .8s var(--ease);}
-  .mv:hover h3{transform:translateX(6px);}
-  .mv p{font-size:17.5px;color:#4a4438;max-width:560px;}
 
   /* ─────────── selectivity ─────────── */
   .select{background:var(--navy-deep);color:var(--ivory);overflow:hidden;}
@@ -408,7 +405,7 @@
 
   /* ─────────── footer ─────────── */
   footer{background:var(--navy-deep);color:rgba(243,236,221,.55);text-align:center;padding:64px 24px 44px;position:relative;}
-  footer .fmark{font-family:'Beau Rivage',cursive;font-size:44px;color:var(--brass);line-height:1.28;padding-bottom:.1em;margin-bottom:4px;}
+  footer .fmark{font-family:'Beau Rivage',cursive;font-size:44px;color:var(--brass);line-height:1.28;padding-bottom:.1em;margin-bottom:4px;text-decoration:none;display:inline-block;}
   footer .ftag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:rgba(243,236,221,.62);}
   /* the address in the hero's face, so the page opens and closes on the same
      line. Padding, not margin: it carries the 44px tap target a thumb needs
@@ -426,8 +423,6 @@
   }
   @media (max-width:640px){
     body{font-size:18px;}
-    .mv{grid-template-columns:1fr;gap:8px;}
-    .mv .n{padding-top:0;}
     header .hmark{font-size:23px;}
   }
   @media (prefers-reduced-motion:reduce){
@@ -507,7 +502,7 @@
 <a class="skip" href="#main">Skip to content</a>
 
 <header id="hdr">
-  <div class="hmark">Mare Leborgne</div>
+  <a href="/" class="hmark" aria-label="Mare Leborgne, home">Mare Leborgne</a>
   <a href="#apply" class="henq">Enquire</a>
 </header>
 
@@ -536,9 +531,9 @@
 <section class="statement" data-nav="What we do">
   <div class="wrap narrow">
     <span class="label r">What we do</span>
-    <h2 class="display r split">Crafting a web presence for small businesses whose <em>character deserves showing</em>.</h2>
+    <h2 class="display r split">Crafting a web presence for businesses whose <em>character deserves showing</em>.</h2>
     <div class="after">
-      <p class="body r">Most small businesses are more interesting than their websites. The wine bar with a regulars&rsquo; table, the tailor who remembers your shoulders, the sailmaker still hand-stitching a leech, the pilot who has landed on the harbour thirty thousand times. Each one has something a template flattens out.</p>
+      <p class="body r">You already know the thing that makes your business worth choosing. It is usually the first thing a website loses: too particular for a template, and the part you would have mentioned straight away if someone asked you in person.</p>
       <p class="body r">Mare Leborgne is a boutique web design studio in Sydney, building sites the way a good jacket is made. Measured first. Cut by hand. Finished to last.</p>
     </div>
   </div>
@@ -548,29 +543,12 @@
 <section class="approach" id="approach" data-nav="Approach">
   <div class="wrap">
     <span class="label r">The approach</span>
-    <h2 class="display r split" style="margin-top:26px;max-width:740px;">Three movements, and no shortcuts between them.</h2>
-    <div class="movements">
-      <div class="mv r">
-        <div class="n">01</div>
-        <div>
-          <h3>Measured</h3>
-          <p>A conversation before a single line of anything. In person where possible: at the bar, on the boat, in the workshop. What gets built depends entirely on what is actually there.</p>
-        </div>
-      </div>
-      <div class="mv r">
-        <div class="n">02</div>
-        <div>
-          <h3>Cut by hand</h3>
-          <p>No templates, no page builders, no theme bought and reskinned. Typography chosen for your name, not for a category. Everything written and built for one business only.</p>
-        </div>
-      </div>
-      <div class="mv r">
-        <div class="n">03</div>
-        <div>
-          <h3>Finished to last</h3>
-          <p>Handed over properly, quick on every device, and simple enough that you can change your own opening hours. A site that ages well rather than one that needs replacing in two years.</p>
-        </div>
-      </div>
+    <h2 class="display r split" style="margin-top:26px;max-width:840px;">Focus on what you know best. <em>We will do the rest.</em></h2>
+    <div class="prose">
+      <p class="lede r">Before anything is drawn, we spend time on the business itself: how it works, who it is for, what it feels like to walk in, and the things nobody thinks to put in a brief. Everything that follows comes from there.</p>
+      <p class="body r">The aim is a site that leaves someone with the impression they would have had standing in front of the real thing. Typography, pace, colour and wording are chosen for one business only, so that arriving on the page feels like arriving somewhere rather than reading about it.</p>
+      <p class="body r">You will not be handed a page builder or asked to choose a layout. We design it, show it to you, and keep working until it is right. Deciding how it should look is the part you are handing over, and it is the part we do best.</p>
+      <p class="body r">Nothing is bought in and reskinned, and there is no template underneath. From the first conversation to the finished site in your own name, it is handled end to end.</p>
     </div>
   </div>
 </section>
@@ -579,10 +557,11 @@
 <section class="select" id="mission" data-nav="Our Mission">
   <div class="wrap narrow" style="position:relative;z-index:2;">
     <span class="label r">Our Mission</span>
-    <h2 class="display r split">A website should look like the <em>business it belongs to</em>.</h2>
+    <h2 class="display r split">To design with style, in a <em>world full of repetition</em>.</h2>
     <div class="after" style="margin-top:40px;">
-      <p class="body r">Most small businesses end up on one of the same few templates, and the first thing lost is whatever made them worth visiting. The studio works the other way round. Every site begins with the business itself, and is built so that it could not be handed to anyone else.</p>
-      <p class="body r">That takes time, so only a few projects stay open at once, and some enquiries end in a recommendation elsewhere. It has never been about the size of the business. Uruguayan hand, French ear, sailor's eye: the work is made in Sydney, for people who care how a thing is finished.</p>
+      <p class="body r">A business with real character deserves more than a page that lists what it does. It deserves somewhere a visitor can feel what the place is like and why it is the way it is, and want to stay a moment longer than they meant to.</p>
+      <p class="body r">Templates and generated pages are everywhere now, and they arrive at the same few answers. Style is not decoration against that. It is the thing that says a person made this, for this, and for no one else.</p>
+      <p class="body r">We expect it everywhere else: buildings worth walking past, objects worth keeping, a room you are happy to sit in. A website is where most people meet a business first, and it is the one place we still accept the generic.</p>
       <div class="sig r">
         <div class="nm">Augusto Leborgne</div>
         <div class="rl">Founder &nbsp;·&nbsp; Mare Leborgne</div>
@@ -592,7 +571,7 @@
 </section>
 
 <!-- ───────────── application ───────────── -->
-<section class="apply" id="apply" data-nav="Enquire">
+<section class="apply" id="apply" data-nav="Enquire" tabindex="-1">
   <div class="wrap">
     <span class="label r">Enquire</span>
     <h2 class="display r split" style="margin-top:26px;max-width:720px;">Tell us about what you have built.</h2>
@@ -653,7 +632,7 @@
 </main>
 
 <footer>
-  <div class="fmark">Mare Leborgne</div>
+  <a href="/" class="fmark" aria-label="Mare Leborgne, home">Mare Leborgne</a>
   <div class="ftag">Sites, sur mesure.</div>
   <a class="fmail" href="mailto:hello@mareleborgne.com">hello@mareleborgne.com</a>
   <div class="fine">Sydney, Australia</div>
@@ -859,6 +838,28 @@
   addEventListener('scroll', onScroll, { passive: true });
   addEventListener('resize', onScroll, { passive: true });   /* rotating a tablet re-evaluates */
   onScroll();
+
+  /* ── in-page links ────────────────────────────────────────
+     Enquire scrolls to the form without leaving #apply in the address bar.
+     The href stays in the markup so the link still works with no JavaScript
+     and still reads as a link to a screen reader; only the history entry and
+     the visible URL are suppressed. Focus is moved by hand, since preventing
+     the default also prevents the browser from moving it: without that, a
+     keyboard user presses Enquire and their next Tab returns to the header.
+     The skip link is deliberately excluded — it needs the native behaviour. */
+  document.querySelectorAll('a[href^="#"]:not(.skip)').forEach(function (a) {
+    a.addEventListener('click', function (ev) {
+      var id = a.getAttribute('href');
+      if (id === '#') return;
+      var t = document.querySelector(id);
+      if (!t) return;
+      ev.preventDefault();
+      t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      /* preventScroll, or the focus call would jump the page and cancel the
+         smooth scroll it was meant to accompany */
+      try { t.focus({ preventScroll: true }); } catch (e) { t.focus(); }
+    });
+  });
 
   /* ── form: focus bars, magnetic button, mailto compose ── */
   document.querySelectorAll('.field').forEach(function (f) {
