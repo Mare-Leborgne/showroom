@@ -628,6 +628,28 @@
   footer .fmail:hover{color:var(--brass-lit);}
   footer .fine{font-family:'Jost',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(243,236,221,.55);margin-top:10px;}
 
+  /* ─────────── the enquiry on a screen with room ───────────
+     Five questions at the page's own rhythm came to 1.56 screens on a 900px
+     laptop: a scroll and a half to answer a form that is meant to read as the
+     start of a conversation rather than a task. Nothing is made smaller here.
+     The type, the measure, the tap targets and both answer boxes are all
+     exactly where they were. What closes is the space between things - the
+     section's own padding was 270px of it - and the two fields nobody has to
+     think about sit on one line instead of two. */
+  @media (min-width:641px){
+    /* the form is the last thing before the footer, and the footer brings its
+       own 64px, so the bottom needs less than the page's standard rhythm */
+    .apply{padding:clamp(64px,8vh,104px) 0 clamp(44px,5.5vh,72px);}
+    .apply .label{margin-bottom:18px;}
+    /* out-specifying the style attributes in the markup, the way the phone
+       block below already does */
+    .apply h2.display{margin-top:18px!important;}
+    .apply p.body{margin-top:18px!important;}
+    form{margin-top:34px;}
+    .field{margin-bottom:24px;}
+    .apply .pair{display:grid;grid-template-columns:1fr 1fr;column-gap:32px;}
+  }
+
   @media (max-width:640px){
     body{font-size:18px;}
     header .hmark{font-size:23px;}
@@ -934,13 +956,19 @@
         <textarea id="f3" name="feeling" rows="3" aria-describedby="f3hint"></textarea><i class="bar"></i>
         <div class="hint" id="f3hint">The most useful question on this form.</div>
       </div>
-      <div class="field">
-        <label for="f4">Your name</label>
-        <input type="text" id="f4" name="name" required autocomplete="name"><i class="bar"></i>
-      </div>
-      <div class="field">
-        <label for="f5">Where to reply</label>
-        <input type="email" id="f5" name="email" required autocomplete="email" inputmode="email" spellcheck="false"><i class="bar"></i>
+      <!-- the two administrative fields, side by side on anything wider than a
+           phone. Wrapped rather than gridded through the form itself, so the
+           phone layout below stays exactly as it was tuned: .pair is just a
+           div until the media query picks it up. -->
+      <div class="pair">
+        <div class="field">
+          <label for="f4">Your name</label>
+          <input type="text" id="f4" name="name" required autocomplete="name"><i class="bar"></i>
+        </div>
+        <div class="field">
+          <label for="f5">Where to reply</label>
+          <input type="email" id="f5" name="email" required autocomplete="email" inputmode="email" spellcheck="false"><i class="bar"></i>
+        </div>
       </div>
 
       <!-- spam trap: off-screen, never ticked by a person. Named botcheck so the
